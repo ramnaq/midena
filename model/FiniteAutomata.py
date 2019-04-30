@@ -13,6 +13,21 @@ class FiniteAutomata():
         return self.table.keys()
     
 
+    def export_to(self, path):
+        fa_json = {}
+        fa_json["name"] = self.name
+        fa_json["sigma"] = self.sigma
+        fa_json["table"] = self.table
+        fa_json["initial"] = self.initial
+        fa_json["accepting"] = self.accepting
+
+        fa_json["rg_str"] = self.grammar_str
+        fa_json["regex_str"] = self.regex_str
+
+        with open(path, 'w') as outfile:
+            json.dump(fa_json, outfile)
+
+
     def __str__(self):
         t = self.table
         fastr = "";
@@ -50,3 +65,4 @@ class FiniteAutomata():
         fa.regex_str = data["regex_str"]
         fa.grammar_str = data["rg_str"]
         return fa
+
