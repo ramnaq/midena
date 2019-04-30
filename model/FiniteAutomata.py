@@ -2,7 +2,7 @@ import json
 
 class FiniteAutomata():
 
-    def __init__(self, sigma = [''], table = {}, initial = "", accepting = [""]):
+    def __init__(self, sigma=[''], table={}, initial="", accepting=[""]):
         self.sigma = sigma
         self.table = table
         self.initial = initial

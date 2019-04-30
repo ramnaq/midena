@@ -11,7 +11,7 @@ view = MainWindow()
 presenter = MainPresenter(view)
 
 # Just testing
-fa = FiniteAutomata.import_from('primeiroultimo')
+fa = FiniteAutomata.import_from('tests/primeiroultimo.json')
 print(fa.table)
 # end
 
