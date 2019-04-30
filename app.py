@@ -12,7 +12,7 @@ presenter = MainPresenter(view)
 
 # Just testing
 fa = FiniteAutomata.import_from('tests/primeiroultimo.json')
-print(fa.table)
+print(fa)
 # end
 
 view.show()
