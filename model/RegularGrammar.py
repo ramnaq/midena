@@ -1,21 +1,23 @@
 
 class RegularGrammar():
     
-    def __init__(self, symbols, sigma, prods, s):
+    def __init__(self, symbols, sigma, prods, s, name="Regular_Grammar"):
         if not (symbols and sigma and prods and s):
             raise ValueError("Parameters must not be null.")
         if not self.is_regular(symbols, sigma, prods, s):
             raise ValueError("Not Regular Grammar.")
 
-        self.symbols = set(symbols)
-        self.sigma = set(sigma.lower())
+        self.symbols = symbols
+        self.sigma = sigma
         self.productions = prods
         self.define_root(s)
+        self.name = name
 
 
     def is_regular(self, symbols, sigma, prods, s):
         for p in prods:
-            if len(p[0]) > 1: return False 
+            if (len(p[0]) > 1) or (p[0] in sigma) or (p[0] not in symbols):
+                return False 
             for beta in p[1]:
                 if (len(beta) > 2) or (beta[0] not in sigma):
                     return False
