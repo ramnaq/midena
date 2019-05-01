@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>900</width>
+    <width>753</width>
     <height>600</height>
    </rect>
   </property>
@@ -172,7 +172,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <layout class="QVBoxLayout" name="grammar_creation_vlayout">
+       <layout class="QVBoxLayout" name="grammar_creation_VLayout">
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <property name="bottomMargin">
@@ -229,7 +229,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QTextEdit" name="symbolsTextEdit">
+           <widget class="QTextEdit" name="symbols_textEdit">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -276,7 +276,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QTextEdit" name="terminalsTextEdit">
+           <widget class="QTextEdit" name="terminals_textEdit">
             <property name="maximumSize">
              <size>
               <width>110</width>
@@ -333,7 +333,7 @@
          </layout>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="productionsLayout">
+         <layout class="QVBoxLayout" name="productions_VLayout">
           <property name="spacing">
            <number>5</number>
           </property>
@@ -341,7 +341,7 @@
            <number>0</number>
           </property>
           <item>
-           <layout class="QHBoxLayout" name="productionLayout">
+           <layout class="QHBoxLayout" name="production_HLayout">
             <item>
              <widget class="QTextEdit" name="prodAlphaTextEdit">
               <property name="maximumSize">
@@ -438,7 +438,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QTextEdit" name="textEdit">
+           <widget class="QTextEdit" name="grammar_name_textEdit">
             <property name="maximumSize">
              <size>
               <width>110</width>
@@ -569,7 +569,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>900</width>
+     <width>753</width>
      <height>20</height>
     </rect>
    </property>
