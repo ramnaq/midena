@@ -3,9 +3,9 @@ class RegularGrammar():
     
     def __init__(self, symbols, sigma, prods, s):
         if not (symbols and sigma and prods and s):
-            raise ValueError("Parameters must not be null")
+            raise ValueError("Parameters must not be null.")
         if not self.is_regular(symbols, sigma, prods, s):
-            raise ValueError("Not Regular Grammar")
+            raise ValueError("Not Regular Grammar.")
 
         self.symbols = set(symbols)
         self.sigma = set(sigma.lower())
