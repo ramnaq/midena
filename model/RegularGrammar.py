@@ -1,6 +1,6 @@
 
 class RegularGrammar():
-    
+
     def __init__(self, symbols, sigma, prods, s, name="Regular_Grammar"):
         if not (symbols and sigma and prods and s):
             raise ValueError("Parameters must not be null.")
@@ -13,11 +13,10 @@ class RegularGrammar():
         self.define_root(s)
         self.name = name
 
-
     def is_regular(self, symbols, sigma, prods, s):
         for p in prods:
             if (len(p[0]) > 1) or (p[0] in sigma) or (p[0] not in symbols):
-                return False 
+                return False
             for beta in p[1]:
                 if (len(beta) > 2) or (beta[0] not in sigma):
                     return False
@@ -26,33 +25,26 @@ class RegularGrammar():
                     return False
         return True
 
-
-
     def define_root(self, s):
         if (self.symbols is not None) and (s not in self.symbols):
             self.__root = s
 
-
     def add_production(self, p):
-        self.productions.append(p) 
-
+        self.productions.append(p)
 
     def derivate(self, iform, n):
         pass
-
 
     def apply_productions(self, w):
         pass
 
 
-
 if __name__ == "__main__":
     # alphabet: {0,1} and starts with 0
     s = ("S", ["0A", "0"])
-    a = ("A", ["0A", "1A","0","1"])
+    a = ("A", ["0A", "1A", "0", "1"])
     productions = [s, a]
     rg = RegularGrammar(symbols="SA01", sigma="01", prods=productions, s='S')
-
 
     # not Regular Grammars
     print("N: non terminals, T: terminals, X: something")
@@ -67,7 +59,6 @@ if __name__ == "__main__":
     prods3 = [s, c]
     prods4 = [s, d]
     prods5 = [s, e]
-
 
     try:
         rg = RegularGrammar(symbols="SA01", sigma="01", prods=prods1, s='S')
