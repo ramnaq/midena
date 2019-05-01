@@ -172,7 +172,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout">
+       <layout class="QVBoxLayout" name="grammar_creation_vlayout">
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <property name="bottomMargin">
@@ -189,7 +189,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QTextEdit" name="initialProdTextEdit">
+           <widget class="QTextEdit" name="initial_prod_textEdit">
             <property name="maximumSize">
              <size>
               <width>110</width>
@@ -317,14 +317,14 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="addProdBtn">
+           <widget class="QPushButton" name="btn_add_prod">
             <property name="text">
              <string>Add</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="removeProdBtn">
+           <widget class="QPushButton" name="btn_remove_prod">
             <property name="text">
              <string>Remove</string>
             </property>
@@ -364,9 +364,6 @@
               <property name="verticalScrollBarPolicy">
                <enum>Qt::ScrollBarAlwaysOff</enum>
               </property>
-              <property name="lineWrapMode">
-               <enum>QTextEdit::FixedColumnWidth</enum>
-              </property>
              </widget>
             </item>
             <item>
@@ -390,7 +387,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QTextEdit" name="probBetaTextEdit">
+             <widget class="QTextEdit" name="prodBetaTextEdit">
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
@@ -466,7 +463,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="createGrammarBtn">
+           <widget class="QPushButton" name="btn_create_grammar">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -519,7 +516,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="removeGrammarBtn">
+       <widget class="QPushButton" name="btn_remove_grammar">
         <property name="text">
          <string>Remove Grammar</string>
         </property>
