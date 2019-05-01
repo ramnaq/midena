@@ -1,19 +1,19 @@
 from presenter.BasePresenter import BasePresenter
+from model.FileUtil import import_FA, export_FA
+
 
 class MainPresenter(BasePresenter):
+
     def __init__(self, view):
         super().__init__(view)
 
-    def setup_handlers(self):
-        self.view.btn_import_fa.clicked.connect(self.on_import_fa_clicked)
-        self.view.btn_create_fa.clicked.connect(self.on_create_fa_clicked)
-        self.view.btn_save_fa.clicked.connect(self.on_save_fa_clicked)
-
     def on_import_fa_clicked(self):
-        self.view.set_labeltext("aloha")
+        self.current_fa = import_FA('tests/primeiroultimo.json')
+        self.view.show_FA(self.current_fa)
 
     def on_create_fa_clicked(self):
         pass
-    
+
     def on_save_fa_clicked(self):
-        pass
+        if self.current_fa is not None:
+            export_FA(self.current_fa, "tests/other_fa.json")
