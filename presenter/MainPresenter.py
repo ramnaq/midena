@@ -50,7 +50,9 @@ class MainPresenter(BasePresenter):
         return grammar
 
     def on_remove_grammar_clicked(self):
-        pass
+        selectedGrammar = self.view.ui.grammarsWidgetList.currentItem()
+        row = self.view.ui.grammarsWidgetList.row(selectedGrammar)
+        self.view.ui.grammarsWidgetList.takeItem(row)
 
     def onSaveGrammarBtnClicked(self):
         selectedGrammar = self.view.ui.grammarsWidgetList.currentItem()
