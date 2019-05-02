@@ -15,7 +15,7 @@ class RegularGrammar():
 
     def is_regular(self, symbols, sigma, prods, s):
         for p in prods:
-            if (len(p[0]) > 1) or (p[0] in sigma) or (p[0] not in symbols):
+            if (len(p[0]) > 1) or (p[0] in sigma):
                 return False
             for beta in p[1]:
                 if (len(beta) > 2) or (beta[0] not in sigma):
@@ -27,7 +27,7 @@ class RegularGrammar():
 
     def define_root(self, s):
         if (self.symbols is not None) and (s not in self.symbols):
-            self.__root = s
+            self.root = s
 
     def add_production(self, p):
         self.productions.append(p)

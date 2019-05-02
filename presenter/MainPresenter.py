@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from presenter.BasePresenter import BasePresenter
-from model.FileUtil import import_FA, export_FA
+from model.FileUtil import import_FA, export_FA, exportGrammar
 from presenter.UIObjectsCreator import production_textEdit, read_productions
 from model.RegularGrammar import RegularGrammar
 
@@ -10,8 +10,7 @@ class MainPresenter(BasePresenter):
 
     def __init__(self, view):
         super().__init__(view)
-        # singleProdLayout = self.create_production_HLayout()
-        # self.view.productions_VLayout.addLayout(singleProdLayout)
+        self.grammars = []
 
     def on_create_fa_clicked(self):
         pass
@@ -47,8 +46,22 @@ class MainPresenter(BasePresenter):
             ...
 
         self.view.clearGrammarFields()
+        self.grammars.append(grammar)
         return grammar
 
     def on_remove_grammar_clicked(self):
         pass
 
+    def onSaveGrammarBtnClicked(self):
+        selectedGrammar = self.view.ui.grammarsWidgetList.currentItem()
+        if (selectedGrammar is not None):
+            name = selectedGrammar.text()
+            grammar = self.findByName(name)
+            if grammar is not None:
+                exportGrammar(grammar, "tests/" + name + ".json")
+
+    def findByName(self, name):
+        for g in self.grammars:
+            if g.name == name:
+                return g
+        return None

@@ -9,7 +9,7 @@ def mockGrammarTable(view):
     view.ui.grammarTableWidget.setItem(1,2, QtWidgets.QTableWidgetItem("0A|1A|1|0"))
 
     view.ui.initial_prod_textEdit.setText("S")
-    view.ui.symbols_textEdit.setText("S,A,0,1")
+    view.ui.symbols_textEdit.setText("A")
     view.ui.terminals_textEdit.setText("0,1")
     view.ui.grammar_name_textEdit.setText("João")
 

@@ -39,3 +39,17 @@ def export_FA(fa, path):
 
     with open(path, 'w') as outfile:
         json.dump(fa_json, outfile)
+
+def importGrammar(path):
+    pass
+
+def exportGrammar(g, path):
+    gJson = {}
+    gJson["name"] = g.name
+    gJson["root"] = g.root
+    gJson["symbols"] = list(g.symbols)
+    gJson["sigma"] = list(g.sigma)
+    gJson["productions"] = g.productions
+
+    with open(path, 'w') as outfile:
+        json.dump(gJson, outfile)
