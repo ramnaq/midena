@@ -16,7 +16,15 @@ def production_textEdit():
 def read_productions(tableWidget):
     productions = []
     for i in range(tableWidget.rowCount()):
-        alpha = tableWidget.item(i,0).text()
-        beta = tableWidget.item(i,2).text().split('|')
-        productions.append((alpha, beta))
+        alpha_entry = tableWidget.item(i,0)
+        beta_entry = tableWidget.item(i,2)
+        if (alpha_entry is not None) and (beta_entry is not None):
+            if (alpha_entry.text() != "") and (beta_entry.text() != ""):
+                alpha = alpha_entry.text()
+                beta = beta_entry.text().split('|')
+                productions.append((alpha, beta))
+            else:
+                raise ValueError("Neither α or ß can be empty!")
+        else:
+            raise ValueError("Item must not be None!")
     return productions

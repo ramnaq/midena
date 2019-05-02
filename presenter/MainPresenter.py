@@ -33,16 +33,19 @@ class MainPresenter(BasePresenter):
     def on_create_grammar_clicked(self):
         s = self.view.ui.initial_prod_textEdit.toPlainText()
         symbols_entry = self.view.ui.symbols_textEdit.toPlainText()
-        terminals_entry = self.view.ui.terminals_textEdit.toPlainText()
-        name = self.view.ui.grammar_name_textEdit.toPlainText()
-        productions = read_productions(self.view.ui.grammarTableWidget)
-
         symbols = set(symbols_entry.split(','))
+        terminals_entry = self.view.ui.terminals_textEdit.toPlainText()
         sigma = set(terminals_entry.split(','))
+        name = self.view.ui.grammar_name_textEdit.toPlainText()
 
-        grammar = RegularGrammar(symbols, sigma, productions, s, name)
+        grammar = None
+        try:
+            productions = read_productions(self.view.ui.grammarTableWidget)
+            grammar = RegularGrammar(symbols, sigma, productions, s, name)
+            self.view.addGrammarToListBox(grammar)
+        except(ValueError):
+            ...
 
-        self.view.addGrammarToListBox(grammar)
         self.view.clearGrammarFields()
         return grammar
 
