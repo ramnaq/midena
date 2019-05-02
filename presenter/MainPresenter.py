@@ -7,13 +7,18 @@ class MainPresenter(BasePresenter):
     def __init__(self, view):
         super().__init__(view)
 
-    def on_import_fa_clicked(self):
-        self.current_fa = import_FA('tests/primeiroultimo.json')
+    def on_import_fa(self, path):
+        self.current_fa = import_FA(path)
         self.view.show_FA(self.current_fa)
 
-    def on_create_fa_clicked(self):
-        pass
-
-    def on_save_fa_clicked(self):
+    def on_save_fa(self, path: str):
         if self.current_fa is not None:
-            export_FA(self.current_fa, "tests/other_fa.json")
+            self.current_fa.name = path.split('/')[-1].replace('.json', '')
+            export_FA(self.current_fa, path)
+
+    def on_fa_item_changed(self, updated_fa):
+        try:
+            self.current_fa = updated_fa
+            self.view.show_FA(updated_fa)
+        except Exception as exc:
+            print(f'Exception: {exc}')
