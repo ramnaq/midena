@@ -43,6 +43,7 @@ class MainPresenter(BasePresenter):
         grammar = RegularGrammar(symbols, sigma, productions, s, name)
 
         self.view.addGrammarToListBox(grammar)
+        self.view.clearGrammarFields()
         return grammar
 
     def on_remove_grammar_clicked(self):

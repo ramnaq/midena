@@ -50,6 +50,14 @@ class MainWindow(QtWidgets.QMainWindow):
     def addGrammarToListBox(self, g):
         self.ui.grammarsWidgetList.addItem(QtWidgets.QListWidgetItem(g.name))
 
+    def clearGrammarFields(self):
+        self.ui.initial_prod_textEdit.setText("")
+        self.ui.symbols_textEdit.setText("")
+        self.ui.terminals_textEdit.setText("")
+        self.ui.grammar_name_textEdit.setText("")
+        self.ui.grammarTableWidget.setRowCount(0)
+        self.setupGrammarTable()
+
     def set_labeltext(self, txt):
         self.ui.btn_create_fa.setText(txt)
 
