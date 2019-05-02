@@ -25,42 +25,26 @@ class MainPresenter(BasePresenter):
             export_FA(self.current_fa, "tests/other_fa.json")
 
     def on_add_prod_clicked(self):
-        prodLayout = self.create_production_HLayout()
-        self.view.productions_VLayout.addLayout(prodLayout)
+        self.view.addRowToGrammarTable()
 
     def on_remove_prod_clicked(self):
         pass
 
     def on_create_grammar_clicked(self):
-        s = self.view.initial_prod_textEdit.toPlainText()
-        symbols_entry = self.view.symbols_textEdit.toPlainText()
-        terminals_entry = self.view.terminals_textEdit.toPlainText()
-        name = self.view.grammar_name_textEdit.toPlainText()
-        productions = read_productions(self.view.productions_VLayout)
+        s = self.view.ui.initial_prod_textEdit.toPlainText()
+        symbols_entry = self.view.ui.symbols_textEdit.toPlainText()
+        terminals_entry = self.view.ui.terminals_textEdit.toPlainText()
+        name = self.view.ui.grammar_name_textEdit.toPlainText()
+        productions = read_productions(self.view.ui.grammarTableWidget)
 
         symbols = set(symbols_entry.split(','))
         sigma = set(terminals_entry.split(','))
-        self.grammar = RegularGrammar(symbols, sigma, productions, s, name)
+
+        grammar = RegularGrammar(symbols, sigma, productions, s, name)
+
+        self.view.addGrammarToListBox(grammar)
+        return grammar
 
     def on_remove_grammar_clicked(self):
         pass
 
-    def create_production_HLayout(self):
-        prodLayout = QtWidgets.QHBoxLayout()
-
-        alphaTextEdit = production_textEdit()
-        betaTextEdit = production_textEdit()
-
-        arrowFont = QtGui.QFont()
-        arrowFont.setPointSize(18)
-        arrowFont.setWeight(50)
-
-        arrow = QtWidgets.QLabel("→")
-        arrow.setMaximumSize(QtCore.QSize(16777215, 30))
-        arrow.setFont(arrowFont)
-
-        prodLayout.addWidget(alphaTextEdit)
-        prodLayout.addWidget(arrow)
-        prodLayout.addWidget(betaTextEdit)
-
-        return prodLayout

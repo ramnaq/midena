@@ -13,13 +13,10 @@ def production_textEdit():
     return prod_textEdit
 
 
-def read_productions(prods_VLayout):
-    prods_HLayouts = [prods_VLayout.itemAt(i) for i in range(prods_VLayout.count())]
+def read_productions(tableWidget):
     productions = []
-    for p_layout in prods_HLayouts:
-        prods_objs = [p_layout.itemAt(i) for i in range(p_layout.count())]
-        print(prods_objs[0])
-        alpha = p_layout.itemAt(0).toPlainText()
-        beta = p_layout.itemAt(2).toPlainText().split('|')
+    for i in range(tableWidget.rowCount()):
+        alpha = tableWidget.item(i,0).text()
+        beta = tableWidget.item(i,2).text().split('|')
         productions.append((alpha, beta))
     return productions

@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'main_window.ui'
+# Form implementation generated from reading ui file 'ui/main_window.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.12.1
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(753, 600)
+        MainWindow.resize(905, 536)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.groupBox = QtWidgets.QGroupBox(self.centralwidget)
@@ -56,7 +57,7 @@ class Ui_MainWindow(object):
         self.GrammarGroupBox.setFlat(False)
         self.GrammarGroupBox.setObjectName("GrammarGroupBox")
         self.verticalLayoutWidget_3 = QtWidgets.QWidget(self.GrammarGroupBox)
-        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(10, 20, 268, 500))
+        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(10, 27, 271, 531))
         self.verticalLayoutWidget_3.setObjectName("verticalLayoutWidget_3")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_3)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -139,50 +140,11 @@ class Ui_MainWindow(object):
         self.btn_remove_prod.setObjectName("btn_remove_prod")
         self.horizontalLayout_12.addWidget(self.btn_remove_prod)
         self.grammar_creation_VLayout.addLayout(self.horizontalLayout_12)
-        self.productions_VLayout = QtWidgets.QVBoxLayout()
-        self.productions_VLayout.setContentsMargins(-1, -1, -1, 0)
-        self.productions_VLayout.setSpacing(5)
-        self.productions_VLayout.setObjectName("productions_VLayout")
-        self.production_HLayout = QtWidgets.QHBoxLayout()
-        self.production_HLayout.setObjectName("production_HLayout")
-        self.prodAlphaTextEdit = QtWidgets.QTextEdit(self.verticalLayoutWidget_3)
-        self.prodAlphaTextEdit.setMaximumSize(QtCore.QSize(16777215, 25))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        font.setBold(False)
-        font.setWeight(50)
-        font.setStyleStrategy(QtGui.QFont.PreferDefault)
-        self.prodAlphaTextEdit.setFont(font)
-        self.prodAlphaTextEdit.setAutoFillBackground(False)
-        self.prodAlphaTextEdit.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.prodAlphaTextEdit.setObjectName("prodAlphaTextEdit")
-        self.production_HLayout.addWidget(self.prodAlphaTextEdit)
-        self.prodArrowLabel = QtWidgets.QLabel(self.verticalLayoutWidget_3)
-        self.prodArrowLabel.setMaximumSize(QtCore.QSize(16777215, 30))
-        font = QtGui.QFont()
-        font.setPointSize(18)
-        font.setBold(False)
-        font.setWeight(50)
-        self.prodArrowLabel.setFont(font)
-        self.prodArrowLabel.setObjectName("prodArrowLabel")
-        self.production_HLayout.addWidget(self.prodArrowLabel)
-        self.prodBetaTextEdit = QtWidgets.QTextEdit(self.verticalLayoutWidget_3)
-        self.prodBetaTextEdit.setMaximumSize(QtCore.QSize(16777215, 25))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        font.setBold(False)
-        font.setWeight(50)
-        self.prodBetaTextEdit.setFont(font)
-        self.prodBetaTextEdit.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.prodBetaTextEdit.setObjectName("prodBetaTextEdit")
-        self.production_HLayout.addWidget(self.prodBetaTextEdit)
-        self.productions_VLayout.addLayout(self.production_HLayout)
-        self.grammar_creation_VLayout.addLayout(self.productions_VLayout)
-        self.label = QtWidgets.QLabel(self.verticalLayoutWidget_3)
-        self.label.setMaximumSize(QtCore.QSize(16777215, 10))
-        self.label.setText("")
-        self.label.setObjectName("label")
-        self.grammar_creation_VLayout.addWidget(self.label)
+        self.grammarTableWidget = QtWidgets.QTableWidget(self.verticalLayoutWidget_3)
+        self.grammarTableWidget.setObjectName("grammarTableWidget")
+        self.grammarTableWidget.setColumnCount(0)
+        self.grammarTableWidget.setRowCount(0)
+        self.grammar_creation_VLayout.addWidget(self.grammarTableWidget)
         self.horizontalLayout_11 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_11.setContentsMargins(5, 0, 5, 0)
         self.horizontalLayout_11.setObjectName("horizontalLayout_11")
@@ -240,7 +202,7 @@ class Ui_MainWindow(object):
         self.groupBox_4.setObjectName("groupBox_4")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 753, 20))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 905, 20))
         self.menubar.setObjectName("menubar")
         self.menuMenu = QtWidgets.QMenu(self.menubar)
         self.menuMenu.setObjectName("menuMenu")
@@ -265,13 +227,12 @@ class Ui_MainWindow(object):
         self.btn_minimize_fa.setText(_translate("MainWindow", "Minimize"))
         self.btn_convert_fa_regex.setText(_translate("MainWindow", "Convert to Reg Exp"))
         self.GrammarGroupBox.setTitle(_translate("MainWindow", "Grammar"))
-        self.initialProdLabel.setText(_translate("MainWindow", "Initital Production"))
+        self.initialProdLabel.setText(_translate("MainWindow", "Initital "))
         self.symbolsLabel.setText(_translate("MainWindow", "Symbols"))
         self.terminalsLabel.setText(_translate("MainWindow", "Terminal Symbols   "))
         self.prodsLabel.setText(_translate("MainWindow", "Productions"))
         self.btn_add_prod.setText(_translate("MainWindow", "Add"))
         self.btn_remove_prod.setText(_translate("MainWindow", "Remove"))
-        self.prodArrowLabel.setText(_translate("MainWindow", "→"))
         self.btn_create_grammar.setText(_translate("MainWindow", "Create Grammar"))
         self.grammarListLabel.setText(_translate("MainWindow", "List of Grammars"))
         __sortingEnabled = self.grammarsWidgetList.isSortingEnabled()
@@ -283,4 +244,5 @@ class Ui_MainWindow(object):
         self.groupBox_3.setTitle(_translate("MainWindow", "Regular Expression"))
         self.groupBox_4.setTitle(_translate("MainWindow", "Tests"))
         self.menuMenu.setTitle(_translate("MainWindow", "Menu"))
+
 
