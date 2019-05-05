@@ -25,7 +25,7 @@ def import_FA(path):
     fa = FiniteAutomata(sigma, table, initial, accepting)
     fa.name = data["name"]
     fa.regex_str = data["regex_str"]
-    fa.grammar_str = data["rg_str"]
+    fa.grammar_str = data["grammar_str"]
     return fa
 
 
@@ -36,7 +36,7 @@ def export_FA(fa, path):
     fa_json["table"] = fa.table
     fa_json["initial"] = fa.initial
     fa_json["accepting"] = fa.accepting
-    fa_json["rg_str"] = fa.grammar_str
+    fa_json["grammar_str"] = fa.grammar_str
     fa_json["regex_str"] = fa.regex_str
 
     with open(path, 'w') as outfile:
