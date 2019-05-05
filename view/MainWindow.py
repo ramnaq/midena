@@ -13,6 +13,7 @@ class MainWindow(QtWidgets.QMainWindow):
     faItemChanged = pyqtSignal(FiniteAutomata)
     faImport = pyqtSignal(str)
     faSave = pyqtSignal(str)
+    faTestWord = pyqtSignal(str)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -24,6 +25,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.btn_import_fa.clicked.connect(self.on_import_fa_clicked)
         self.ui.btn_save_fa.clicked.connect(self.on_save_fa_clicked)
         self.ui.btn_determinize_fa.clicked.connect(presenter.on_determinize_fa)
+        self.ui.btn_test_word.clicked.connect(self.on_test_word_clicked)
 
         self.ui.tableWidget.itemSelectionChanged.connect(self.on_fa_item_selected)
         self.ui.tableWidget.itemChanged.connect(self.on_fa_item_changed)
@@ -31,6 +33,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.faImport.connect(presenter.on_import_fa)
         self.faSave.connect(presenter.on_save_fa)
         self.faItemChanged.connect(presenter.on_fa_item_changed)
+        self.faTestWord.connect(presenter.on_test_word)
 
     def on_create_fa_clicked(self):
         num_states, ok = QtWidgets.QInputDialog.getInt(
@@ -69,8 +72,6 @@ class MainWindow(QtWidgets.QMainWindow):
             self.faSave.emit(path)
 
     def show_FA(self, fa: FiniteAutomata):
-        print('show')
-        print(fa)
         self.ui.tableWidget.blockSignals(True)
         self.ui.tableWidget.clear()
         self.current_fa = fa
@@ -188,3 +189,14 @@ class MainWindow(QtWidgets.QMainWindow):
         fa_ui.label.show()
 
         dialog.exec_()
+
+    def on_test_word_clicked(self):
+        text = self.ui.edittext_test_word.text()
+        self.faTestWord.emit(text)
+
+    def show_test_word_msg(self, result):
+        msgBox = QtWidgets.QMessageBox()
+        msgBox.setWindowTitle('Sentence Recognition')
+        msgBox.setFixedWidth(400)
+        msgBox.setText(f'Sentence is {result}.')
+        msgBox.exec_()

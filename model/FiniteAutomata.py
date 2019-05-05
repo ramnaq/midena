@@ -151,3 +151,17 @@ class FiniteAutomata():
                 continue
             closure += self.e_closure(st)
         return closure
+
+    def accept(self, sentence: str):
+        det = self
+        if not det.is_dfa():
+            det = det.determinize()
+
+        current_state = det.initial
+        for c in sentence:
+            if c not in det.sigma:
+                return False
+            current_state = det.table[current_state][c]
+            if type(current_state) == list:
+                current_state = current_state[0]
+        return current_state in det.accepting
