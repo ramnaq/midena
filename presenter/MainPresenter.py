@@ -6,6 +6,7 @@ class MainPresenter(BasePresenter):
 
     def __init__(self, view):
         super().__init__(view)
+        self.current_fa = None
 
     def on_import_fa(self, path):
         self.current_fa = import_FA(path)
@@ -28,3 +29,12 @@ class MainPresenter(BasePresenter):
             print('Current automata is already Deterministic.')
         else:
             self.on_fa_item_changed(self.current_fa.determinize())
+
+    def on_test_word(self, text: str):
+        if not self.current_fa:
+            print("Error: No FA active")
+            return
+        accept = self.current_fa.accept(text)
+        self.view.show_test_word_msg('accepted' if accept else 'rejected')
+
+
