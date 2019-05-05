@@ -34,7 +34,7 @@ def read_productions(tableWidget):
 
 def promptFileName(parent, promptName, text):
     filename = ""
-    fileNameEntry, selectedFilter = QtWidgets.QFileDialog.getSaveFileName(parent, "Save F:xile")
+    fileNameEntry, _ = QtWidgets.QFileDialog.getSaveFileName(parent, "Save F:xile")
     if fileNameEntry[-4:] != ".ext":
         filename = fileNameEntry + ".ext"
     else:

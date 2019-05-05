@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from model.RegularGrammar import RegularGrammar
-from model.FileUtil import import_FA, export_FA, exportGrammar
+from model.FileUtil import import_FA, export_FA, importGrammar, exportGrammar
 from presenter.UIObjectsCreator import *
 from presenter.BasePresenter import BasePresenter
 
@@ -61,9 +61,9 @@ class MainPresenter(BasePresenter):
             grammar = self.findByName(name)
             if grammar is not None:
                 parent = self.view.ui.centralwidget
-                filename = promptFileName(parent, 'Export grammar to file',\
+                fileName = promptFileName(parent, 'Export grammar to file',\
                         'Enter the file name:')
-                exportGrammar(grammar, filename)
+                exportGrammar(grammar, fileName)
         else:
             messageBox = QtWidgets.QMessageBox()
             messageBox.setText(
@@ -71,11 +71,12 @@ class MainPresenter(BasePresenter):
             messageBox.exec_()
 
     def onImportGrammarBtnClicked(self):
-        return
-	#grammarFileName = # file chooser, get grammar file name
-	#grammar = importGrammar(grammarFileName)
-        #view.showGrammarr(grammar)
-
+        parent = self.view.ui.centralwidget
+        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(parent,\
+                'Open file', "Midena Files (*.ext *.json)")
+        if fileName != "":
+            grammar = importGrammar(fileName)
+            self.view.showGrammar(grammar)
 
     def findByName(self, name):
         for g in self.grammars:

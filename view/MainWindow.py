@@ -101,5 +101,21 @@ class MainWindow(QtWidgets.QMainWindow):
                     )
 
     def showGrammar(self, g):
-        pass
+        self.ui.initial_prod_textEdit.setText(g.root)
+        self.ui.symbols_textEdit.setText(",".join(list(g.symbols)))
+        self.ui.terminals_textEdit.setText(",".join(list(g.sigma)))
+        self.ui.grammar_name_textEdit.setText(g.name)
+        self._showProductions(g.productions)
 
+    def _showProductions(self, productions):
+        tableWidget = self.ui.grammarTableWidget
+        tableWidget.setRowCount(0)
+        row = 0
+        for p in productions:
+            alpha, beta = p[0], "|".join(p[1])
+            alphaItem = QtWidgets.QTableWidgetItem(alpha)
+            betaItem = QtWidgets.QTableWidgetItem(beta)
+            self.addRowToGrammarTable()
+            tableWidget.setItem(row, 0, alphaItem)
+            tableWidget.setItem(row, 2, betaItem)
+            row += 1
