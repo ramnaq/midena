@@ -20,7 +20,9 @@ class FiniteAutomata():
         t = self.table
         fastr = ""
         for state in t:
-            fastr += state + ":\n"
+            fastr += ('>' if state == self.initial else '') + \
+                ('*' if state in self.accepting else '') + \
+                state + ":\n"
             for symbol, transitions in t[state].items():
                 fastr += "  "
                 fastr += symbol + ": " + str(transitions) + "\n"
@@ -91,35 +93,38 @@ class FiniteAutomata():
         if self.is_dfa():
             return self
 
-        dfa = FiniteAutomata(sigma=[x for x in self.sigma if x != '&'])
+        dfa = FiniteAutomata(sigma=[x for x in self.sigma if x != '&'], accepting=[])
         dfa.name = "Deterministic " + self.name
 
-        initial = self.e_closure(self.initial)  # ['q0', 'q1']
-        dfa.initial = self.state_from_list(initial)  # 'q0q1'
+        initial = self.e_closure(self.initial)
+        dfa.initial = self.state_from_list(initial)
 
-        states_set = [dfa.initial]
+        states_set = [initial]
         while len(states_set) > 0:
             states_tuple = states_set.pop()
             if type(states_tuple) == list:
-                unified_state = self.state_from_list(states_tuple)  # 'q0q1'
+                unified_state = self.state_from_list(states_tuple)
             else:
                 unified_state = states_tuple
             if unified_state in dfa.states():
                 continue
             dfa.table[unified_state] = {x: '-' for x in dfa.sigma}
 
-            for symbol in self.sigma:
+            # check if is accepting state
+            for accepting in self.accepting:
+                if accepting in unified_state:
+                    dfa.accepting += [unified_state]
+                    break
+
+            for symbol in dfa.sigma:
                 transitions = []
                 if type(states_tuple) == str:
                     states_tuple = [states_tuple]
                 for q in states_tuple:
-                    try:
-                        tr = self.e_closure_list(self.table[q][symbol])
-                    except KeyError:
-                        tr = self.e_closure_list(self.table[self.initial][symbol])
-                    transitions += [x for x in tr if x not in transitions]  # [q1, q2, q3]
+                    tr = self.e_closure_list(self.table[q][symbol])
+                    transitions += [x for x in tr if x not in transitions]
                 if transitions:
-                    new_state = self.state_from_list(transitions)  # 'q1q2q3'
+                    new_state = self.state_from_list(transitions)
                     states_set += [transitions] if transitions not in states_set else []
                     dfa.table[unified_state][symbol] = [new_state]
         return dfa

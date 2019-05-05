@@ -69,6 +69,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.faSave.emit(path)
 
     def show_FA(self, fa: FiniteAutomata):
+        print(fa)
         self.ui.tableWidget.blockSignals(True)
         self.ui.tableWidget.clear()
         self.current_fa = fa
@@ -81,7 +82,7 @@ class MainWindow(QtWidgets.QMainWindow):
             label = s
             if (s in fa.accepting):
                 label = '* ' + label
-            if (s in fa.initial):
+            if (s == fa.initial):
                 label = '> ' + label
             states_label[s] = label
 
@@ -151,6 +152,9 @@ class MainWindow(QtWidgets.QMainWindow):
             if '*' in item.text():
                 if st not in self.current_fa.accepting:
                     self.current_fa.accepting.append(st)
+            else:
+                if st in self.current_fa.accepting:
+                    self.current_fa.accepting.remove(st)
             if '>' in item.text():
                 self.current_fa.initial = st
         else:
