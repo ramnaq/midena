@@ -22,3 +22,10 @@ class MainPresenter(BasePresenter):
             self.view.show_FA(updated_fa)
         except Exception as exc:
             print(f'Exception: {exc}')
+
+    def on_determinize_fa(self):
+        if self.current_fa.is_dfa():
+            print('Current automata is already Deterministic.')
+        else:
+            self.on_fa_item_changed(self.current_fa.determinize())
+        

@@ -1,0 +1,1 @@
+{"name": "example", "sigma": ["&", "a", "b"], "table": {"q0": {"a": "-", "b": ["q1"], "&": ["q2"]}, "q1": {"a": ["q1", "q2"], "b": ["q2"], "&": "-"}, "q2": {"a": ["q0"], "b": "-", "&": "-"}}, "initial": "q0", "accepting": ["q2"], "grammar_str": "", "regex_str": ""}
