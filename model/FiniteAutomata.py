@@ -93,7 +93,9 @@ class FiniteAutomata():
         if self.is_dfa():
             return self
 
-        dfa = FiniteAutomata(sigma=[x for x in self.sigma if x != '&'], accepting=[])
+        dfa = FiniteAutomata(sigma=[x for x in self.sigma if x != '&'])
+        dfa.accepting = []
+        dfa.table = {}
         dfa.name = "Deterministic " + self.name
 
         initial = self.e_closure(self.initial)

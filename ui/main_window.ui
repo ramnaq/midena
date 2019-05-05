@@ -145,19 +145,6 @@
       <string>Convert to Reg Exp</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_view_fa">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>360</y>
-       <width>120</width>
-       <height>30</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>View FA</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">

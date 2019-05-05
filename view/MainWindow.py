@@ -69,6 +69,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.faSave.emit(path)
 
     def show_FA(self, fa: FiniteAutomata):
+        print('show')
         print(fa)
         self.ui.tableWidget.blockSignals(True)
         self.ui.tableWidget.clear()
