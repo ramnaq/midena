@@ -3,7 +3,6 @@ import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from ui.main_window import Ui_MainWindow
 from model.FiniteAutomata import FiniteAutomata
-from view.Mocker import mockGrammarTable
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -14,7 +13,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.setTableItemFont()
         self.setupGrammarTable()
-        mockGrammarTable(self)
 
     def setTableItemFont(self):
         self.tableItemFont = QtGui.QFont()
