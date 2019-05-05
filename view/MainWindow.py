@@ -58,6 +58,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.grammarTableWidget.setRowCount(0)
         self.setupGrammarTable()
 
+    def clearRegExField(self):
+        self.ui.regExTextEdit.setText("")
+
     def set_labeltext(self, txt):
         self.ui.btn_create_fa.setText(txt)
 
@@ -72,6 +75,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.btn_remove_grammar.clicked.connect(presenter.on_remove_grammar_clicked)
         self.ui.exportGrammarBtn.clicked.connect(presenter.onExportGrammarBtnClicked)
         self.ui.importGrammarBtn.clicked.connect(presenter.onImportGrammarBtnClicked)
+        self.ui.exportRegExBtn.clicked.connect(presenter.onExportRegExBtnClicked)
+        self.ui.importRegExBtn.clicked.connect(presenter.onImportRegExBtnClicked)
 
     def show_FA(self, fa: FiniteAutomata):
         sigma = {}
@@ -106,6 +111,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.terminals_textEdit.setText(",".join(list(g.sigma)))
         self.ui.grammar_name_textEdit.setText(g.name)
         self._showProductions(g.productions)
+
+    def showRegEx(self, re):
+        self.ui.regExTextEdit.setText(str(re))
 
     def _showProductions(self, productions):
         tableWidget = self.ui.grammarTableWidget

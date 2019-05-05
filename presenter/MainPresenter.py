@@ -1,7 +1,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from model.FileUtil import *
 from model.RegularGrammar import RegularGrammar
-from model.FileUtil import import_FA, export_FA, importGrammar, exportGrammar
+from model.RegularExpression import RegularExpression
 from presenter.UIObjectsCreator import *
 from presenter.BasePresenter import BasePresenter
 
@@ -78,8 +79,30 @@ class MainPresenter(BasePresenter):
             grammar = importGrammar(fileName)
             self.view.showGrammar(grammar)
 
+    def onExportRegExBtnClicked(self):
+        parent = self.view.ui.centralwidget
+        fileName = promptFileName(parent, 'Export regular expression to file',\
+                'Enter the file name:')
+
+        regexStr = self.view.ui.regExTextEdit.toPlainText()
+        # validate if regexStr is a valid regular expression with specific
+        # automata (maybe in RegularExpression constructor)
+        regex = RegularExpression(regexStr)
+        exportRegEx(regex, fileName)
+        self.view.clearRegExField()
+
+
+    def onImportRegExBtnClicked(self):
+        parent = self.view.ui.centralwidget
+        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(parent,\
+                'Open file', "Midena Files (*.ext *.json)")
+        if fileName != "":
+            regex = importRegEx(fileName)
+            self.view.showRegEx(regex)
+
     def findByName(self, name):
         for g in self.grammars:
             if g.name == name:
                 return g
         return None
+
