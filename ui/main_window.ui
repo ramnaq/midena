@@ -38,6 +38,12 @@
        <height>200</height>
       </rect>
      </property>
+     <attribute name="horizontalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
     </widget>
     <widget class="QPushButton" name="btn_create_fa">
      <property name="geometry">

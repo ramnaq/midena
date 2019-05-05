@@ -24,6 +24,8 @@ class Ui_MainWindow(object):
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
+        self.tableWidget.horizontalHeader().setVisible(False)
+        self.tableWidget.verticalHeader().setVisible(False)
         self.btn_create_fa = QtWidgets.QPushButton(self.groupBox)
         self.btn_create_fa.setGeometry(QtCore.QRect(10, 30, 90, 30))
         self.btn_create_fa.setFlat(False)
