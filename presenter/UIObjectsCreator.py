@@ -21,8 +21,9 @@ def read_productions(tableWidget):
         if (alpha_entry is not None) and (beta_entry is not None):
             if (alpha_entry.text() != "") and (beta_entry.text() != ""):
                 alpha = alpha_entry.text()
-                beta = beta_entry.text().split('|')
-                productions.append((alpha, beta))
+                if alpha != "":
+                    beta = beta_entry.text().split('|')
+                    productions.append((alpha, beta))
             else:
                 raise ValueError("Neither α or ß can be empty!")
         else:
