@@ -1,5 +1,6 @@
 import json
 from model.FiniteAutomata import FiniteAutomata
+from model.RegularGrammar import RegularGrammar
 
 
 def import_FA(path):
@@ -41,7 +42,13 @@ def export_FA(fa, path):
         json.dump(fa_json, outfile)
 
 def importGrammar(path):
-    pass
+    data = json.load(open(path, 'r'))
+    name = data["name"]
+    root = data["root"]
+    symbols = set(data["symbols"])
+    sigma = set(data["sigma"])
+    productions = [tuple(p) for p in data["productions"]]
+    return RegularGrammar(symbols, sigma, productions, root, name)
 
 def exportGrammar(g, path):
     gJson = {}

@@ -70,7 +70,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.btn_remove_prod.clicked.connect(presenter.on_remove_prod_clicked)
         self.ui.btn_create_grammar.clicked.connect(presenter.on_create_grammar_clicked)
         self.ui.btn_remove_grammar.clicked.connect(presenter.on_remove_grammar_clicked)
-        self.ui.saveGrammarBtn.clicked.connect(presenter.onSaveGrammarBtnClicked)
+        self.ui.exportGrammarBtn.clicked.connect(presenter.onExportGrammarBtnClicked)
+        self.ui.importGrammarBtn.clicked.connect(presenter.onImportGrammarBtnClicked)
 
     def show_FA(self, fa: FiniteAutomata):
         sigma = {}
@@ -98,3 +99,7 @@ class MainWindow(QtWidgets.QMainWindow):
                         i, j, QtWidgets.QTableWidgetItem(
                             str(fa.table[state][symbol]))
                     )
+
+    def showGrammar(self, g):
+        pass
+

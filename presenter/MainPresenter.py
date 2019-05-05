@@ -1,9 +1,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from presenter.BasePresenter import BasePresenter
-from model.FileUtil import import_FA, export_FA, exportGrammar
-from presenter.UIObjectsCreator import production_textEdit, read_productions
 from model.RegularGrammar import RegularGrammar
+from model.FileUtil import import_FA, export_FA, exportGrammar
+from presenter.UIObjectsCreator import *
+from presenter.BasePresenter import BasePresenter
 
 
 class MainPresenter(BasePresenter):
@@ -54,13 +54,23 @@ class MainPresenter(BasePresenter):
         row = self.view.ui.grammarsWidgetList.row(selectedGrammar)
         self.view.ui.grammarsWidgetList.takeItem(row)
 
-    def onSaveGrammarBtnClicked(self):
+    def onExportGrammarBtnClicked(self):
         selectedGrammar = self.view.ui.grammarsWidgetList.currentItem()
         if (selectedGrammar is not None):
             name = selectedGrammar.text()
             grammar = self.findByName(name)
             if grammar is not None:
-                exportGrammar(grammar, "tests/" + name + ".json")
+                parent = self.view.ui.centralwidget
+                filename = promptFileName(parent, 'Export grammar to file',\
+                        'Enter the file name:')
+                if filename != "": exportGrammar(grammar, filename)
+
+    def onImportGrammarBtnClicked(self):
+        return
+	#grammarFileName = # file chooser, get grammar file name
+	#grammar = importGrammar(grammarFileName)
+        #view.showGrammarr(grammar)
+
 
     def findByName(self, name):
         for g in self.grammars:

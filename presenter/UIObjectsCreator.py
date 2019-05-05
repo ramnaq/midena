@@ -28,3 +28,17 @@ def read_productions(tableWidget):
         else:
             raise ValueError("Item must not be None!")
     return productions
+
+
+def promptFileName(parent, promptName, text):
+    filename = ""
+    fileNameEntry, ok = QtWidgets.QInputDialog.getText(parent,\
+            promptName, text)
+    if ok:
+        if fileNameEntry[-4:] != ".ext":
+            messageBox = QtWidgets.QMessageBox()
+            messageBox.setText("The file name must ends with '.ext'!")
+            messageBox.exec_()
+        else:
+            filename = fileNameEntry
+    return filename
