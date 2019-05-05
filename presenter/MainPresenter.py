@@ -63,7 +63,12 @@ class MainPresenter(BasePresenter):
                 parent = self.view.ui.centralwidget
                 filename = promptFileName(parent, 'Export grammar to file',\
                         'Enter the file name:')
-                if filename != "": exportGrammar(grammar, filename)
+                exportGrammar(grammar, filename)
+        else:
+            messageBox = QtWidgets.QMessageBox()
+            messageBox.setText(
+                    "Please, select in the list the grammar to be exported.")
+            messageBox.exec_()
 
     def onImportGrammarBtnClicked(self):
         return

@@ -32,13 +32,9 @@ def read_productions(tableWidget):
 
 def promptFileName(parent, promptName, text):
     filename = ""
-    fileNameEntry, ok = QtWidgets.QInputDialog.getText(parent,\
-            promptName, text)
-    if ok:
-        if fileNameEntry[-4:] != ".ext":
-            messageBox = QtWidgets.QMessageBox()
-            messageBox.setText("The file name must ends with '.ext'!")
-            messageBox.exec_()
-        else:
-            filename = fileNameEntry
+    fileNameEntry, selectedFilter = QtWidgets.QFileDialog.getSaveFileName(parent, "Save F:xile")
+    if fileNameEntry[-4:] != ".ext":
+        filename = fileNameEntry + ".ext"
+    else:
+        filename = fileNameEntry
     return filename
