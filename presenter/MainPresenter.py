@@ -28,4 +28,3 @@ class MainPresenter(BasePresenter):
             print('Current automata is already Deterministic.')
         else:
             self.on_fa_item_changed(self.current_fa.determinize())
-        
