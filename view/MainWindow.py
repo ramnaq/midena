@@ -81,9 +81,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.faImport.connect(presenter.on_import_fa)
         self.faSave.connect(presenter.on_save_fa)
         self.faItemChanged.connect(presenter.on_fa_item_changed)
+        self.ui.convertFAtoRGBtn.clicked.connect(presenter.onConvertFAtoRGBtnClicked)
 
         self.ui.btn_add_prod.clicked.connect(presenter.on_add_prod_clicked)
-        self.ui.btn_remove_prod.clicked.connect(presenter.on_remove_prod_clicked)
+        self.ui.removeProductionBtn.clicked.connect(presenter.onRemoveProductionClicked)
         self.ui.btn_create_grammar.clicked.connect(presenter.on_create_grammar_clicked)
         self.ui.btn_remove_grammar.clicked.connect(presenter.on_remove_grammar_clicked)
         self.ui.exportGrammarBtn.clicked.connect(presenter.onExportGrammarBtnClicked)

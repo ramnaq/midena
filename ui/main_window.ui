@@ -77,7 +77,7 @@
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_convert_fa_gr">
+    <widget class="QPushButton" name="convertFAtoRGBtn">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -330,7 +330,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="btn_remove_prod">
+           <widget class="QPushButton" name="removeProductionBtn">
             <property name="text">
              <string>Remove</string>
             </property>

@@ -27,7 +27,11 @@ class MainPresenter(BasePresenter):
     def on_add_prod_clicked(self):
         self.view.addRowToGrammarTable()
 
-    def on_remove_prod_clicked(self):
+    def onRemoveProductionClicked(self):
+        n = self.view.ui.grammarTableWidget.rowCount()
+        self.view.ui.grammarTableWidget.setRowCount(n-1)
+
+    def onConvertFAtoRGBtnClicked(self):
         pass
 
     def on_create_grammar_clicked(self):
