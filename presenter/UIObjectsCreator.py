@@ -23,6 +23,7 @@ def read_productions(tableWidget):
                 alpha = alpha_entry.text()
                 if alpha != "":
                     beta = beta_entry.text().split('|')
+                    beta = list(filter(lambda b: b != "", beta))
                     productions.append((alpha, beta))
             else:
                 raise ValueError("Neither α or ß can be empty!")
