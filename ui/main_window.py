@@ -59,7 +59,7 @@ class Ui_MainWindow(object):
         self.GrammarGroupBox.setFlat(False)
         self.GrammarGroupBox.setObjectName("GrammarGroupBox")
         self.verticalLayoutWidget_3 = QtWidgets.QWidget(self.GrammarGroupBox)
-        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(10, 27, 276, 531))
+        self.verticalLayoutWidget_3.setGeometry(QtCore.QRect(10, 27, 276, 601))
         self.verticalLayoutWidget_3.setObjectName("verticalLayoutWidget_3")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.verticalLayoutWidget_3)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)

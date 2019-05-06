@@ -1,5 +1,6 @@
 import json
 
+from model.RegularGrammar import RegularGrammar
 
 class FiniteAutomata():
 
@@ -71,3 +72,43 @@ class FiniteAutomata():
         self.initial = obj['initial']
         self.accepting = obj['accepting']
         self.table = obj['table']
+
+    def toRegularGrammar(self):
+        name = self.name + "Grammar"
+        root = self.initial
+        sigma = set(self.sigma)
+
+        faStates = self.states()
+        grammarStates = list(map(lambda s: self._grammarSymbol(s), faStates))
+        symbols = set(grammarStates)
+
+        productions = []
+
+        for state in faStates:
+            stateTransictions = self.table[state]
+            alpha = self._grammarSymbol(state)
+            beta = []
+            for symbol in self.sigma:
+                if symbol in stateTransictions.keys():
+                    nextStates =\
+                            self._nextStatesSeparated(stateTransictions, symbol)
+                    beta += list(map(
+                                lambda ns: symbol + self._grammarSymbol(ns),\
+                                nextStates)
+                            )
+                    if state in self.accepting:
+                        beta.append(symbol)
+            productions.append((alpha, beta))
+
+        return RegularGrammar(symbols, sigma, productions, root, name)
+
+
+    def _grammarSymbol(self, state):
+        return "_".join(state.upper())
+
+    def _nextStatesSeparated(self, transitions, symbol):
+        nextStates = []
+        for ns in transitions[symbol]:
+            nextStates += ns.split(", ")
+        return nextStates
+

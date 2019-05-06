@@ -32,7 +32,9 @@ class MainPresenter(BasePresenter):
         self.view.ui.grammarTableWidget.setRowCount(n-1)
 
     def onConvertFAtoRGBtnClicked(self):
-        pass
+        if self.current_fa is not None:
+            grammar = self.current_fa.toRegularGrammar()
+            self.view.showGrammar(grammar)
 
     def on_create_grammar_clicked(self):
         s = self.view.ui.initial_prod_textEdit.toPlainText()
