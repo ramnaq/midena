@@ -1,0 +1,1 @@
+{"name": "nfa_ends_with_zero", "sigma": ["0", "1"], "table": {"A": {"0": ["A", "B"], "1": ["A"]}, "B": {"0": "-", "1": "-"}}, "initial": "A", "accepting": ["B"], "grammar_str": "", "regex_str": ""}

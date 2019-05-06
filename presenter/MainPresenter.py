@@ -14,7 +14,7 @@ class MainPresenter(BasePresenter):
         self.grammars = []
 
     def on_create_fa_clicked(self):
-        pass
+        self.current_fa = None
 
     def on_import_fa(self, path):
         self.current_fa = import_FA(path)
@@ -123,3 +123,18 @@ class MainPresenter(BasePresenter):
             self.view.show_FA(updated_fa)
         except Exception as exc:
             print(f'Exception: {exc}')
+
+    def on_determinize_fa(self):
+        if self.current_fa.is_dfa():
+            print('Current automata is already Deterministic.')
+        else:
+            self.on_fa_item_changed(self.current_fa.determinize())
+
+    def on_test_word(self, text: str):
+        if not self.current_fa:
+            print("Error: No FA active")
+            return
+        accept = self.current_fa.accept(text)
+        self.view.show_test_word_msg('accepted' if accept else 'rejected')
+
+
