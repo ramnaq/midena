@@ -1,0 +1,4 @@
+{"initial": "q0", "accepting": ["q1", "q3"], "table": 
+{"q0": {"b": ["q1"], "a": ["q3"]},
+"q1": {"a": ["q2, q3"], "b": ["q1"]},
+"q2": {"b": ["q1"], "a": ["q2"]}, "q3": {"b": ["q4"], "a": ["q3"]}, "q4": {"b": ["q4"], "a": ["q3"]}}, "name": "PrimeiroUltimoIgual", "regex_str": "(a(a|b)*a)|(b(a|b)*b)|a|b", "rg_str": null}

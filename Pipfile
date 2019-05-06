@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 pyqt5-tools = "*"
+pylint = "*"
 
 [packages]
 pyqt5 = "*"
