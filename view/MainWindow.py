@@ -1,9 +1,12 @@
-from PyQt5 import QtWidgets
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtCore import Qt
+import sys
 
-from ui.main_window import Ui_MainWindow
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import pyqtSignal
+
 from ui.fa_viewer import Ui_Dialog
+from ui.main_window import Ui_MainWindow
 from model.FiniteAutomata import FiniteAutomata
 from utils import remove_flag
 
@@ -19,6 +22,55 @@ class MainWindow(QtWidgets.QMainWindow):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.setTableItemFont()
+        self.setupGrammarTable()
+        from view.Mocker import mockGrammarTable
+        mockGrammarTable(self)
+
+    def setTableItemFont(self):
+        self.tableItemFont = QtGui.QFont()
+        self.tableItemFont.setPointSize(18)
+        self.tableItemFont.setWeight(50)
+
+    def setupGrammarTable(self):
+        self.ui.grammarTableWidget.setColumnCount(3)
+        self.ui.grammarTableWidget.setRowCount(1)
+        self.ui.grammarTableWidget.setHorizontalHeaderLabels(["α", "→", "ß"])
+        self.addArrowToRow(self.ui.grammarTableWidget.currentRow() + 1)
+
+    def addRowToGrammarTable(self):
+        itemAlpha = QtWidgets.QTableWidgetItem()
+        itemBeta = QtWidgets.QTableWidgetItem()
+        itemAlpha.setFont(self.tableItemFont)
+        itemBeta.setFont(self.tableItemFont)
+
+        row = self.ui.grammarTableWidget.rowCount()
+        self.ui.grammarTableWidget.setRowCount(row + 1)
+        self.ui.grammarTableWidget.setItem(row + 1, 0, itemAlpha)
+        self.ui.grammarTableWidget.setItem(row + 1, 2, itemBeta)
+        self.addArrowToRow(row)
+
+    def addArrowToRow(self, row):
+        arrowItem = QtWidgets.QTableWidgetItem("   →")
+        arrowItem.setFlags(QtCore.Qt.NoItemFlags)
+        arrowItem.setFlags(QtCore.Qt.ItemIsEnabled)
+        arrowItem.setFont(self.tableItemFont)
+
+        self.ui.grammarTableWidget.setItem(row, 1, arrowItem)
+
+    def addGrammarToListBox(self, g):
+        self.ui.grammarsWidgetList.addItem(QtWidgets.QListWidgetItem(g.name))
+
+    def clearGrammarFields(self):
+        self.ui.initial_prod_textEdit.setText("")
+        self.ui.symbols_textEdit.setText("")
+        self.ui.terminals_textEdit.setText("")
+        self.ui.grammar_name_textEdit.setText("")
+        self.ui.grammarTableWidget.setRowCount(0)
+        self.setupGrammarTable()
+
+    def clearRegExField(self):
+        self.ui.regExTextEdit.setText("")
 
     def add_listener(self, presenter):
         self.ui.btn_create_fa.clicked.connect(self.on_create_fa_clicked)
@@ -33,6 +85,16 @@ class MainWindow(QtWidgets.QMainWindow):
         self.faImport.connect(presenter.on_import_fa)
         self.faSave.connect(presenter.on_save_fa)
         self.faItemChanged.connect(presenter.on_fa_item_changed)
+        self.ui.convertFAtoRGBtn.clicked.connect(presenter.onConvertFAtoRGBtnClicked)
+
+        self.ui.btn_add_prod.clicked.connect(presenter.on_add_prod_clicked)
+        self.ui.removeProductionBtn.clicked.connect(presenter.onRemoveProductionClicked)
+        self.ui.btn_create_grammar.clicked.connect(presenter.on_create_grammar_clicked)
+        self.ui.btn_remove_grammar.clicked.connect(presenter.on_remove_grammar_clicked)
+        self.ui.exportGrammarBtn.clicked.connect(presenter.onExportGrammarBtnClicked)
+        self.ui.importGrammarBtn.clicked.connect(presenter.onImportGrammarBtnClicked)
+        self.ui.exportRegExBtn.clicked.connect(presenter.onExportRegExBtnClicked)
+        self.ui.importRegExBtn.clicked.connect(presenter.onImportRegExBtnClicked)
         self.faTestWord.connect(presenter.on_test_word)
 
     def on_create_fa_clicked(self):
@@ -125,6 +187,29 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.tableWidget.setItem(rows - 1, j, item)
         self.ui.tableWidget.resizeColumnsToContents()
         self.ui.tableWidget.blockSignals(False)
+
+    def showGrammar(self, g):
+        self.ui.initial_prod_textEdit.setText(g.root)
+        self.ui.symbols_textEdit.setText(",".join(list(g.symbols)))
+        self.ui.terminals_textEdit.setText(",".join(list(g.sigma)))
+        self.ui.grammar_name_textEdit.setText(g.name)
+        self._showProductions(g.productions)
+
+    def showRegEx(self, re):
+        self.ui.regExTextEdit.setText(str(re))
+
+    def _showProductions(self, productions):
+        tableWidget = self.ui.grammarTableWidget
+        tableWidget.setRowCount(0)
+        row = 0
+        for p in productions:
+            alpha, beta = p[0], "|".join(p[1])
+            alphaItem = QtWidgets.QTableWidgetItem(alpha)
+            betaItem = QtWidgets.QTableWidgetItem(beta)
+            self.addRowToGrammarTable()
+            tableWidget.setItem(row, 0, alphaItem)
+            tableWidget.setItem(row, 2, betaItem)
+            row += 1
 
     def column_to_symbol(self, column):
         return self.ui.tableWidget.item(0, column).text()

@@ -1,5 +1,7 @@
 import json
 from model.FiniteAutomata import FiniteAutomata
+from model.RegularGrammar import RegularGrammar
+from model.RegularExpression import RegularExpression
 
 
 def import_FA(path):
@@ -39,3 +41,36 @@ def export_FA(fa, path):
 
     with open(path, 'w') as outfile:
         json.dump(fa_json, outfile)
+
+def importGrammar(path):
+    data = json.load(open(path, 'r'))
+    name = data["name"]
+    root = data["root"]
+    symbols = set(data["symbols"])
+    sigma = set(data["sigma"])
+    productions = [tuple(p) for p in data["productions"]]
+    return RegularGrammar(symbols, sigma, productions, root, name)
+
+def exportGrammar(g, path):
+    gJson = {}
+    gJson["name"] = g.name
+    gJson["root"] = g.root
+    gJson["symbols"] = list(g.symbols)
+    gJson["sigma"] = list(g.sigma)
+    gJson["productions"] = g.productions
+
+    with open(path, 'w') as outfile:
+        json.dump(gJson, outfile)
+
+def importRegEx(path):
+    regex = None
+
+    with open(path, 'r') as infile:
+        regexStr = infile.readlines()[0]
+ 
+    regex = RegularExpression(regexStr)
+    return regex
+
+def exportRegEx(re, path):
+    with open(path, 'w') as outfile:
+        outfile.write(str(re))
