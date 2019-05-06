@@ -28,22 +28,31 @@ Install:
 
 ### Finite Automata
 
-```I'm so tired
-I haven't slept a wink
-I'm so tired
-My mind is on the blink
-I wonder should I get up
-and fix myself a drink
-No, no no...
+A Finite Automata in Midena is modeled by the class `FiniteAutomata`,
+and it can represent a Deterministic or Non-deterministic automata.
+It consists of:
+* a set `sigma` of characters of the language, e.g. ['a', 'b', '&']
+* an `initial` state, e.g. "q0"
+* a set of `accepting` states, e.g.["q1", "q2"]
+* a `table` of transitions, represented by a hashtable/dict,
+    e.g. {
+            "q0": {'a': ["q1"], 'b': ["q2"]},
+            "q1": {'a': ["q1"], 'b': ["q3"]}
+            ...
+         }
+Each instance of a FA also contains a name that identifies it,
+and when converted it keeps a record of its grammar and regex representation.
 
-But it's no joke, it's doing me harm
-You know I can't sleep, I can't stop my brain
-You know it's three weeks, I'm going insane
-You know I'd give you everything I've got
-for a little peace of mind
-```
+The user can create a new automata clicking at respective button and then entering
+the transition table data that is updated interactively.
+The FA can be saved to a text file and be imported at any time.
+If it's a non-deterministic finite automata, it can also be determinized. And it can
+be converted to a Regular Grammar.
+One can also test if a sentence pertences to the language represented by the automata.
+
 
 ### Regular Grammar
+
 No specific library was used for that too. A regular grammar is represented in
 Midena by the class `RegularGrammar`, which is instantiated with:
 * a set `symbols` that are the non-terminal elements of productions
@@ -56,4 +65,5 @@ where BETA is an array of "symbols" and "sigmas"
 
 ### Regular Expression
 
-...
+For the first deadline of this project we didn't need to implement any algorithms for Regular Expressions,
+so it was represented just as a string.
