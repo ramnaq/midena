@@ -24,8 +24,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.setTableItemFont()
         self.setupGrammarTable()
-        from view.Mocker import mockGrammarTable
-        mockGrammarTable(self)
 
     def setTableItemFont(self):
         self.tableItemFont = QtGui.QFont()
