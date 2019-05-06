@@ -43,8 +43,15 @@ for a little peace of mind
 ```
 
 ### Regular Grammar
+No specific library was used for that too. A regular grammar is represented in
+Midena by the class `RegularGrammar`, which is instantiated with:
+* a set `symbols` that are the non-terminal elements of productions
+* a set `sigma` that contains the terminal elements
+* an array of tuples (`productions`), that represents the relation between the
+other grammar elements. Each tuple represent a production in the form ALPHA -> BETA,
+where BETA is an array of "symbols" and "sigmas"
+* a `root` symbol, that is the initial symbol of a grammar
 
-...
 
 ### Regular Expression
 
