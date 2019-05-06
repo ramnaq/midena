@@ -1,10 +1,11 @@
 # MIDENA
 
-A tool for dealing with Regular Languages and Free Context Languages. Midena Implements some algorithm arounD grammars, regular Expressions aNd finite Automata.
+A tool for dealing with Regular Languages and Free Context Languages. Midena Implements some algorithm around grammars, regular Expressions and finite Automata.
 
 Project developed for class INE5421 - Formal Languages and Compilers at UFSC.
 Students: Diogo Junior and Ramna Sidharta
 Programming Language: Python
+Framework for UI: PyQt 5.12
 
 ## Installation
 
