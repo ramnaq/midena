@@ -1,6 +1,7 @@
 import json
 from model.FiniteAutomata import FiniteAutomata
 from model.RegularGrammar import RegularGrammar
+from model.RegularExpression import RegularExpression
 
 
 def import_FA(path):
@@ -60,3 +61,16 @@ def exportGrammar(g, path):
 
     with open(path, 'w') as outfile:
         json.dump(gJson, outfile)
+
+def importRegEx(path):
+    regex = None
+
+    with open(path, 'r') as infile:
+        regexStr = infile.readlines()[0]
+ 
+    regex = RegularExpression(regexStr)
+    return regex
+
+def exportRegEx(re, path):
+    with open(path, 'w') as outfile:
+        outfile.write(str(re))

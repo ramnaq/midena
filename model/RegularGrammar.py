@@ -4,8 +4,8 @@ class RegularGrammar():
     def __init__(self, symbols, sigma, prods, s, name="Regular_Grammar"):
         if not (symbols and sigma and prods and s):
             raise ValueError("Parameters must not be null.")
-        if not self.is_regular(symbols, sigma, prods, s):
-            raise ValueError("Not Regular Grammar.")
+        #if not self.is_regular(symbols, sigma, prods, s):
+        #    raise ValueError("Not Regular Grammar.")
 
         self.symbols = symbols
         self.sigma = sigma
@@ -15,7 +15,7 @@ class RegularGrammar():
 
     def is_regular(self, symbols, sigma, prods, s):
         for p in prods:
-            if (len(p[0]) > 1) or (p[0] in sigma):
+            if (p[0] not in symbols) or (p[0] in sigma):
                 return False
             for beta in p[1]:
                 if (len(beta) > 2) or (beta[0] not in sigma):

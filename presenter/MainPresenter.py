@@ -1,7 +1,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from model.FileUtil import *
 from model.RegularGrammar import RegularGrammar
-from model.FileUtil import import_FA, export_FA, importGrammar, exportGrammar
+from model.RegularExpression import RegularExpression
 from presenter.UIObjectsCreator import *
 from presenter.BasePresenter import BasePresenter
 
@@ -13,7 +14,7 @@ class MainPresenter(BasePresenter):
         self.grammars = []
 
     def on_create_fa_clicked(self):
-        pass
+        self.current_fa = None
 
     def on_import_fa(self, path):
         self.current_fa = import_FA(path)
@@ -26,8 +27,14 @@ class MainPresenter(BasePresenter):
     def on_add_prod_clicked(self):
         self.view.addRowToGrammarTable()
 
-    def on_remove_prod_clicked(self):
-        pass
+    def onRemoveProductionClicked(self):
+        n = self.view.ui.grammarTableWidget.rowCount()
+        self.view.ui.grammarTableWidget.setRowCount(n-1)
+
+    def onConvertFAtoRGBtnClicked(self):
+        if self.current_fa is not None:
+            grammar = self.current_fa.toRegularGrammar()
+            self.view.showGrammar(grammar)
 
     def on_create_grammar_clicked(self):
         s = self.view.ui.initial_prod_textEdit.toPlainText()
@@ -78,6 +85,27 @@ class MainPresenter(BasePresenter):
             grammar = importGrammar(fileName)
             self.view.showGrammar(grammar)
 
+    def onExportRegExBtnClicked(self):
+        parent = self.view.ui.centralwidget
+        fileName = promptFileName(parent, 'Export regular expression to file',\
+                'Enter the file name:')
+
+        regexStr = self.view.ui.regExTextEdit.toPlainText()
+        # validate if regexStr is a valid regular expression with specific
+        # automata (maybe in RegularExpression constructor)
+        regex = RegularExpression(regexStr)
+        exportRegEx(regex, fileName)
+        self.view.clearRegExField()
+
+
+    def onImportRegExBtnClicked(self):
+        parent = self.view.ui.centralwidget
+        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(parent,\
+                'Open file', "Midena Files (*.ext *.json)")
+        if fileName != "":
+            regex = importRegEx(fileName)
+            self.view.showRegEx(regex)
+
     def findByName(self, name):
         for g in self.grammars:
             if g.name == name:
@@ -95,3 +123,18 @@ class MainPresenter(BasePresenter):
             self.view.show_FA(updated_fa)
         except Exception as exc:
             print(f'Exception: {exc}')
+
+    def on_determinize_fa(self):
+        if self.current_fa.is_dfa():
+            print('Current automata is already Deterministic.')
+        else:
+            self.on_fa_item_changed(self.current_fa.determinize())
+
+    def on_test_word(self, text: str):
+        if not self.current_fa:
+            print("Error: No FA active")
+            return
+        accept = self.current_fa.accept(text)
+        self.view.show_test_word_msg('accepted' if accept else 'rejected')
+
+
