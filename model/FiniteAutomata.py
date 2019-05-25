@@ -107,11 +107,14 @@ class FiniteAutomata():
                                 lambda ns: symbol + self._grammarSymbol(ns),\
                                 nextStates)
                             )
-                    if state in self.accepting:
-                        beta.append(symbol)
+                    self._addTerminalSymbol(symbol, beta, nextStates)
             productions.append((alpha, beta))
 
         return RegularGrammar(symbols, sigma, productions, root, name)
+
+    def _addTerminalSymbol(self, symbol, beta, nextStates):
+        if list(filter(lambda s: s in self.accepting, nextStates)):
+            beta.append(symbol)
 
 
     def _grammarSymbol(self, state):
