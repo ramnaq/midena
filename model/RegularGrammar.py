@@ -3,8 +3,8 @@ class RegularGrammar():
     def __init__(self, symbols, sigma, prods, s, name="Regular_Grammar"):
         if not (symbols and sigma and prods and s):
             raise ValueError("Parameters must not be null.")
-        #if not self.is_regular(symbols, sigma, prods, s):
-        #    raise ValueError("Not Regular Grammar.")
+        if not self.is_regular(symbols, sigma, prods, s):
+            raise ValueError("Not Regular Grammar.")
 
         self.symbols = symbols
         self.sigma = sigma
@@ -17,11 +17,12 @@ class RegularGrammar():
             if (p[0] not in symbols) or (p[0] in sigma):
                 return False
             for beta in p[1]:
-                if (len(beta) > 2) or (beta[0] not in sigma):
+                if (beta[0] not in sigma):
                     return False
-                elif (len(beta) == 2) and\
-                        ((beta[1] in sigma) or (beta[1] not in symbols)):
+                elif (len(beta) > 1) and\
+                        ((beta[1] in sigma) or (beta[1:] not in symbols)):
                     return False
+                beta = list(map(lambda b: [b], beta))  # (A->aB_1) beta=[a, B_1]
         return True
 
     def define_root(self, s):
