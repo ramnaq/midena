@@ -1,4 +1,3 @@
-
 class RegularGrammar():
 
     def __init__(self, symbols, sigma, prods, s, name="Regular_Grammar"):

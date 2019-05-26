@@ -84,48 +84,6 @@ class FiniteAutomata():
         self.accepting = obj['accepting']
         self.table = obj['table']
 
-    def toRegularGrammar(self):
-        name = self.name + "Grammar"
-        root = self.initial
-        sigma = set(self.sigma)
-
-        faStates = self.states()
-        grammarStates = list(map(lambda s: self._grammarSymbol(s), faStates))
-        symbols = set(grammarStates)
-
-        productions = []
-
-        for state in faStates:
-            stateTransictions = self.table[state]
-            alpha = self._grammarSymbol(state)
-            beta = []
-            for symbol in self.sigma:
-                if symbol in stateTransictions.keys():
-                    nextStates =\
-                            self._nextStatesSeparated(stateTransictions, symbol)
-                    beta += list(map(
-                                lambda ns: symbol + self._grammarSymbol(ns),\
-                                nextStates)
-                            )
-                    self._addTerminalSymbol(symbol, beta, nextStates)
-            productions.append((alpha, beta))
-
-        return RegularGrammar(symbols, sigma, productions, root, name)
-
-    def _addTerminalSymbol(self, symbol, beta, nextStates):
-        if list(filter(lambda s: s in self.accepting, nextStates)):
-            beta.append(symbol)
-
-
-    def _grammarSymbol(self, state):
-        return "_".join(state.upper())
-
-    def _nextStatesSeparated(self, transitions, symbol):
-        nextStates = []
-        for ns in transitions[symbol]:
-            nextStates += ns.split(", ")
-        return nextStates
-
     def add_state(self, st):
         if st in self.states():
             print('Error: state already exists.')
