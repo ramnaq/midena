@@ -3,10 +3,10 @@ from model.FiniteAutomata import FiniteAutomata
 
 def regular_grammar_to_automata(grammar):
     name = grammar.name + "FiniteAutomata"
-    initial = grammar.root
+    initial = grammar_symbol_form(grammar.root)
     table = {}
     sigma = set()
-    accepting  = set()
+    acceptingState = "X"
     for prod in grammar.productions:
         state = prod[0]
         table[state] = {}
@@ -14,14 +14,14 @@ def regular_grammar_to_automata(grammar):
             symbol = beta[0]
             sigma.add(symbol)
             if len(beta) == 1:
-                accepting.add(state)
+                table[state][symbol] = acceptingState
             else:
                 table[state][symbol] = beta[1]
-    return FiniteAutomata(list(sigma), table, initial, list(accepting))
+    return FiniteAutomata(list(sigma), table, initial, [acceptingState])
 
 def finite_automata_to_grammar(automata):
     name = automata.name + "Grammar"
-    root = automata.initial
+    root = grammar_symbol_form(automata.initial)
     sigma = set(automata.sigma)
 
     faStates = automata.states()
