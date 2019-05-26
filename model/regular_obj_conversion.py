@@ -13,10 +13,23 @@ def regular_grammar_to_automata(grammar):
         for beta in prod[1]:
             symbol = beta[0]
             sigma.add(symbol)
+
+            if symbol not in table[state]:
+                table[state][symbol] = set()
+
             if len(beta) == 1:
-                table[state][symbol] = acceptingState
+                table[state][symbol].add(acceptingState)
             else:
-                table[state][symbol] = beta[1]
+                table[state][symbol].add(beta[1])
+
+    table[acceptingState] = {}
+    for t in sigma:
+        table[acceptingState][t] = []
+
+    for state in table.keys():
+        for symbol in table[state]:
+            table[state][symbol] = list(table[state][symbol])
+
     return FiniteAutomata(list(sigma), table, initial, [acceptingState])
 
 def finite_automata_to_grammar(automata):
