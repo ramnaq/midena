@@ -1,7 +1,8 @@
 import json
-import copy
 
 from model.RegularGrammar import RegularGrammar
+from model.Minimization import Partition, Group
+
 
 class FiniteAutomata():
 
@@ -102,17 +103,16 @@ class FiniteAutomata():
             for symbol in self.sigma:
                 if symbol in stateTransictions.keys():
                     nextStates =\
-                            self._nextStatesSeparated(stateTransictions, symbol)
+                        self._nextStatesSeparated(stateTransictions, symbol)
                     beta += list(map(
-                                lambda ns: symbol + self._grammarSymbol(ns),\
-                                nextStates)
-                            )
+                        lambda ns: symbol + self._grammarSymbol(ns),
+                        nextStates)
+                    )
                     if state in self.accepting:
                         beta.append(symbol)
             productions.append((alpha, beta))
 
         return RegularGrammar(symbols, sigma, productions, root, name)
-
 
     def _grammarSymbol(self, state):
         return "_".join(state.upper())
@@ -205,3 +205,75 @@ class FiniteAutomata():
             if type(current_state) == list:
                 current_state = current_state[0]
         return current_state in det.accepting
+
+    def minimize(self):
+        det = self
+        if not det.is_dfa():
+            det = det.determinize()
+
+        final = set(det.accepting)
+        non_final = set(det.states())
+        non_final.difference_update(final)
+        partK_1 = Partition({Group(final), Group(non_final)})
+        partK = Partition()
+
+        while partK != partK_1:
+            partK_1 = partK
+            partK = Partition()
+            for group in partK_1:
+                for elem in group:
+                    g = det.fit_in_group(elem, partK)
+                    if g:
+                        g.add(elem)
+                    else:
+                        partK.add(Group([elem]))
+        # Create new Automata
+        minimized = FiniteAutomata(det.sigma)
+        while len(partK.groups) > 0:
+            states_group = partK.pop()  # {q1, q3}
+            unified_state = self.state_from_list(states_group)  # q1q3
+            minimized.table[unified_state] = {x: '-' for x in det.sigma}
+
+            # check if it is accepting state
+            for st in states_group:
+                if st in det.accepting:
+                    minimized.accepting.append(unified_state)
+                    break
+
+            for symbol in minimized.sigma:
+                for e in states_group:  
+                    break  # beautiful python
+                *** e is the first element ***
+                """
+                pegar a transicao tr de e
+                get_group G em que tá tr
+                unif_state de G
+                se nao ta em minimized.states:
+                    add unif
+                minimized[unified_state] =/add {symbol: unif}
+                
+                
+                for q in states:
+                    tr = self.e_closure_list(self.table[q][symbol])
+                    transitions += [x for x in tr if x not in transitions]
+                if transitions:
+                    new_state = self.state_from_list(transitions)
+                    states_set += [transitions] if transitions not in states_set else []
+                    dfa.table[unified_state][symbol] = [new_state]
+        return dfa
+
+
+
+    def fit_in_group(self, elem, partition) -> Group:
+        for group in partition.groups:
+            if self.equivalence(elem, group[0], partition):
+                return group
+        return None
+
+    def equivalence(self, a, b, partition) -> bool:
+        for s in self.sigma:
+            dest1 = self.table[a][s][0]
+            dest2 = self.table[b][s][0]
+            if dest1 not in partition.group_of(dest2):
+                return False
+        return True
