@@ -1,4 +1,5 @@
 import json
+from copy import deepcopy
 
 from model.RegularGrammar import RegularGrammar
 from model.Minimization import Partition, Group
@@ -150,7 +151,7 @@ class FiniteAutomata():
                 unified_state = states_tuple
             if unified_state in dfa.states():
                 continue
-            dfa.table[unified_state] = {x: '-' for x in dfa.sigma}
+            dfa.add_state(unified_state)
 
             # check if is accepting state
             for accepting in self.accepting:
@@ -214,25 +215,27 @@ class FiniteAutomata():
         final = set(det.accepting)
         non_final = set(det.states())
         non_final.difference_update(final)
-        partK_1 = Partition({Group(final), Group(non_final)})
-        partK = Partition()
+        partK_1 = Partition()
+        partK = Partition({Group(final), Group(non_final)})
 
         while partK != partK_1:
             partK_1 = partK
             partK = Partition()
             for group in partK_1:
                 for elem in group:
-                    g = det.fit_in_group(elem, partK)
+                    g = det.fit_in_group(elem, partK, partK_1)
                     if g:
                         g.add(elem)
                     else:
                         partK.add(Group([elem]))
         # Create new Automata
         minimized = FiniteAutomata(det.sigma)
+        minimized.name = det.name + 'Minimized'
+        aux_partK = deepcopy(partK)
         while len(partK.groups) > 0:
             states_group = partK.pop()  # {q1, q3}
             unified_state = self.state_from_list(states_group)  # q1q3
-            minimized.table[unified_state] = {x: '-' for x in det.sigma}
+            minimized.accept(unified_state)
 
             # check if it is accepting state
             for st in states_group:
@@ -240,33 +243,26 @@ class FiniteAutomata():
                     minimized.accepting.append(unified_state)
                     break
 
+            # check if it is initial state
+            if det.initial in states_group:
+                minimized.initial = unified_state
+
+            # fill table
             for symbol in minimized.sigma:
-                for e in states_group:  
-                    break  # beautiful python
-                *** e is the first element ***
-                """
-                pegar a transicao tr de e
-                get_group G em que tá tr
-                unif_state de G
-                se nao ta em minimized.states:
-                    add unif
-                minimized[unified_state] =/add {symbol: unif}
-                
-                
-                for q in states:
-                    tr = self.e_closure_list(self.table[q][symbol])
-                    transitions += [x for x in tr if x not in transitions]
-                if transitions:
-                    new_state = self.state_from_list(transitions)
-                    states_set += [transitions] if transitions not in states_set else []
-                    dfa.table[unified_state][symbol] = [new_state]
-        return dfa
+                for e in states_group:  # b e a u t i f u l
+                    break               # p y t h o n
+                transition = det.table[e][symbol][0]
+                g = aux_partK.group_of(transition)
+                unified_transition = self.state_from_list(g)
+                if unified_transition not in minimized.states():
+                    minimized.add_state(unified_transition)
+                minimized.table[unified_state][symbol] = unified_transition
 
+        return minimized
 
-
-    def fit_in_group(self, elem, partition) -> Group:
-        for group in partition.groups:
-            if self.equivalence(elem, group[0], partition):
+    def fit_in_group(self, elem, partitionK, partitionK_1) -> Group:
+        for group in partitionK.groups:
+            if self.equivalence(elem, next(iter(group)), partitionK_1):
                 return group
         return None
 
@@ -274,6 +270,7 @@ class FiniteAutomata():
         for s in self.sigma:
             dest1 = self.table[a][s][0]
             dest2 = self.table[b][s][0]
-            if dest1 not in partition.group_of(dest2):
+            g = partition.group_of(dest2)
+            if g is None or dest1 not in g:
                 return False
         return True

@@ -1,6 +1,8 @@
 class Group():
-    def __init__(self, states=set()):
-        if isinstance(states, list):
+    def __init__(self, states=None):
+        if states is None:
+            self.states = set()
+        elif isinstance(states, list):
             self.states = set(states)
         else:
             self.states = states
@@ -9,13 +11,15 @@ class Group():
         return str(self.states)
 
     def __contains__(self, a):
-        return a in self.states
+        r = a in self.states
+        return r
 
     def __eq__(self, other):
         return self.states == other.states
 
     def __hash__(self):
-        return hash(tuple(sorted(self.states)))
+        h = hash(tuple(sorted(self.states)))
+        return h
 
     def __iter__(self):
         return iter(self.states)
@@ -23,14 +27,17 @@ class Group():
     def __next__(self):
         return next(self.states)
 
+    def add(self, elem):
+        self.states.add(elem)
+
     def pop(self):
         return self.states.pop()
 
 
 class Partition():
 
-    def __init__(self, groups):
-        self.groups = groups
+    def __init__(self, groups=None):
+        self.groups = groups if groups is not None else set()
 
     def __str__(self):
         return f'{[str(g) for g in self.groups]}'.replace('"', '')
@@ -56,12 +63,7 @@ class Partition():
     def __eq__(self, other):
         if not isinstance(other, Partition):
             return False
-        if len(self.groups) != len(other.groups):
-            return False
-        for group in self.groups:
-            if group not in other.groups:
-                return False
-        return True
+        return self.groups == other.groups
 
     def __iter__(self):
         return iter(self.groups)
@@ -70,7 +72,10 @@ class Partition():
         return next(self.groups)
 
     def __hash__(self):
-        return hash(tuple(self.states))
+        return hash(tuple(sorted(self.groups)))
+
+    def __contains__(self, g):
+        return g in self.groups
 
 
 if __name__ == '__main__':
@@ -82,4 +87,6 @@ if __name__ == '__main__':
     print(f'Partition: {p}')
     for g in p:
         print(f'Group: {g}')
-    print(p == Partition(set()))
+    otherpartition = Partition(
+        {Group(['q3', 'q1']), Group(['q2', 'q4', 'q5', 'q6'])})
+    print(p == otherpartition)

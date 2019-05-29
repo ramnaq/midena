@@ -75,24 +75,34 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.btn_import_fa.clicked.connect(self.on_import_fa_clicked)
         self.ui.btn_save_fa.clicked.connect(self.on_save_fa_clicked)
         self.ui.btn_determinize_fa.clicked.connect(presenter.on_determinize_fa)
+        self.ui.btn_minimize_fa.clicked.connect(presenter.on_minimize_fa)
         self.ui.btn_test_word.clicked.connect(self.on_test_word_clicked)
 
-        self.ui.tableWidget.itemSelectionChanged.connect(self.on_fa_item_selected)
+        self.ui.tableWidget.itemSelectionChanged.connect(
+            self.on_fa_item_selected)
         self.ui.tableWidget.itemChanged.connect(self.on_fa_item_changed)
-        
+
         self.faImport.connect(presenter.on_import_fa)
         self.faSave.connect(presenter.on_save_fa)
         self.faItemChanged.connect(presenter.on_fa_item_changed)
-        self.ui.convertFAtoRGBtn.clicked.connect(presenter.onConvertFAtoRGBtnClicked)
+        self.ui.convertFAtoRGBtn.clicked.connect(
+            presenter.onConvertFAtoRGBtnClicked)
 
         self.ui.btn_add_prod.clicked.connect(presenter.on_add_prod_clicked)
-        self.ui.removeProductionBtn.clicked.connect(presenter.onRemoveProductionClicked)
-        self.ui.btn_create_grammar.clicked.connect(presenter.on_create_grammar_clicked)
-        self.ui.btn_remove_grammar.clicked.connect(presenter.on_remove_grammar_clicked)
-        self.ui.exportGrammarBtn.clicked.connect(presenter.onExportGrammarBtnClicked)
-        self.ui.importGrammarBtn.clicked.connect(presenter.onImportGrammarBtnClicked)
-        self.ui.exportRegExBtn.clicked.connect(presenter.onExportRegExBtnClicked)
-        self.ui.importRegExBtn.clicked.connect(presenter.onImportRegExBtnClicked)
+        self.ui.removeProductionBtn.clicked.connect(
+            presenter.onRemoveProductionClicked)
+        self.ui.btn_create_grammar.clicked.connect(
+            presenter.on_create_grammar_clicked)
+        self.ui.btn_remove_grammar.clicked.connect(
+            presenter.on_remove_grammar_clicked)
+        self.ui.exportGrammarBtn.clicked.connect(
+            presenter.onExportGrammarBtnClicked)
+        self.ui.importGrammarBtn.clicked.connect(
+            presenter.onImportGrammarBtnClicked)
+        self.ui.exportRegExBtn.clicked.connect(
+            presenter.onExportRegExBtnClicked)
+        self.ui.importRegExBtn.clicked.connect(
+            presenter.onImportRegExBtnClicked)
         self.faTestWord.connect(presenter.on_test_word)
 
     def on_create_fa_clicked(self):
@@ -101,13 +111,13 @@ class MainWindow(QtWidgets.QMainWindow):
         )
         if not ok:
             return
-        
+
         num_sigma, okSigma = QtWidgets.QInputDialog.getInt(
             self, "Sigma", "Number of symbols:", 2, 1, 20, 1
         )
         if not okSigma:
             return
-        
+
         sigma = [chr(i) for i in range(97, 97 + num_sigma)]
         table = {}
         for i in range(num_states):
@@ -233,7 +243,8 @@ class MainWindow(QtWidgets.QMainWindow):
             st = self.state_from_label(item.text())
             if item.row() > len(self.current_fa.states()):
                 self.fa_selected_item = ''
-            self.current_fa.update_state(self.state_from_label(self.fa_selected_item), st)
+            self.current_fa.update_state(
+                self.state_from_label(self.fa_selected_item), st)
             if '*' in item.text():
                 if st not in self.current_fa.accepting:
                     self.current_fa.accepting.append(st)
@@ -249,7 +260,8 @@ class MainWindow(QtWidgets.QMainWindow):
             symbol = self.column_to_symbol(item.column())
             if tr == '':
                 tr = '-'
-            self.current_fa.table[st][symbol] = self.current_fa.text_to_transition(tr)
+            self.current_fa.table[st][symbol] = self.current_fa.text_to_transition(
+                tr)
         self.ui.tableWidget.resizeColumnsToContents()
         self.faItemChanged.emit(self.current_fa)
 
