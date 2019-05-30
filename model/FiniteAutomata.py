@@ -1,8 +1,8 @@
 import json
 from copy import deepcopy
 
-from model.RegularGrammar import RegularGrammar
-from model.Minimization import Partition, Group
+from .RegularGrammar import RegularGrammar
+from .Minimization import Partition, Group
 
 
 class FiniteAutomata():
@@ -126,7 +126,6 @@ class FiniteAutomata():
 
     def add_state(self, st):
         if st in self.states():
-            print('Error: state already exists.')
             return
         self.table[st] = {x: '-' for x in self.sigma}
 
@@ -235,7 +234,7 @@ class FiniteAutomata():
         while len(partK.groups) > 0:
             states_group = partK.pop()  # {q1, q3}
             unified_state = self.state_from_list(states_group)  # q1q3
-            minimized.accept(unified_state)
+            minimized.add_state(unified_state)
 
             # check if it is accepting state
             for st in states_group:

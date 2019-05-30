@@ -76,17 +76,3 @@ class Partition():
 
     def __contains__(self, g):
         return g in self.groups
-
-
-if __name__ == '__main__':
-    p = Partition()
-    final = Group(['q1', 'q3'])
-    non = Group(['q2', 'q4', 'q5', 'q6'])
-    p.add(final)
-    p.add(non)
-    print(f'Partition: {p}')
-    for g in p:
-        print(f'Group: {g}')
-    otherpartition = Partition(
-        {Group(['q3', 'q1']), Group(['q2', 'q4', 'q5', 'q6'])})
-    print(p == otherpartition)
