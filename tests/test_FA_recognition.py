@@ -6,7 +6,7 @@ def xtest(dfa, words, expected, msg='Success!', start=0):
     for word in words:
         i += 1
         if dfa.accept(word) == expected:
-            print(f'Test {i}: OK')
+            print(f'Test {i}: OK ({word})')
         else:
             print(f'Test {i} failed with word: {word}')
             print(f'Expected: {"accept" if expected else "not accept"}\n')
