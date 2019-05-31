@@ -273,3 +273,42 @@ class FiniteAutomata():
             if g is None or dest1 not in g:
                 return False
         return True
+
+    def rename_states(self, start):
+        new_table = {}
+        new_names = {}
+        new_initial = ""
+        new_accepting = []
+
+        for state in self.table.keys():
+            new_names[state] = "q"+str(start)
+            if state == self.initial:
+                new_initial = new_names[state]
+            if state in self.accepting:
+                new_accepting.append(new_names[state])
+            start += 1
+
+        # Renomear estados
+        for state in self.table.keys():
+            new_table[new_names[state]] = self.table[state]
+
+        # Renomear estados nas transições
+        for state, state_transitions in new_table.items():
+            for symbol, next_state in state_transitions.items():
+                new_table[state][symbol] = list()
+                for i in next_state:
+                    if i == '-':
+                        new_table[state][symbol].append('-')
+                    else:
+                        new_table[state][symbol].append(new_names[i])
+
+        self.initial = new_initial
+        self.accepting = new_accepting
+        self.table = new_table.copy()
+
+
+def union(fa: FiniteAutomata, fb: FiniteAutomata) -> FiniteAutomata:
+    ufa = deepcopy(fa)
+    fb.rename_states(len(fa.states()))
+
+    return ufa
