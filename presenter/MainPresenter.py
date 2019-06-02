@@ -3,8 +3,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from model.FileUtil import *
 from model.RegularGrammar import RegularGrammar
 from model.RegularExpression import RegularExpression
-from presenter.UIObjectsCreator import *
+from model.regular_obj_conversion import *
 from presenter.BasePresenter import BasePresenter
+from presenter.UIObjectsCreator import *
 
 
 class MainPresenter(BasePresenter):
@@ -33,7 +34,7 @@ class MainPresenter(BasePresenter):
 
     def onConvertFAtoRGBtnClicked(self):
         if self.current_fa is not None:
-            grammar = self.current_fa.toRegularGrammar()
+            grammar = finite_automata_to_grammar(self.current_fa)
             self.view.showGrammar(grammar)
 
     def on_create_grammar_clicked(self):

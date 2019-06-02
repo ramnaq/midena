@@ -1,29 +1,38 @@
-
 class RegularGrammar():
 
     def __init__(self, symbols, sigma, prods, s, name="Regular_Grammar"):
         if not (symbols and sigma and prods and s):
             raise ValueError("Parameters must not be null.")
-        #if not self.is_regular(symbols, sigma, prods, s):
-        #    raise ValueError("Not Regular Grammar.")
+
+        self.productions = self.regularProductions(symbols, sigma, prods)
+        if self.productions is None:
+            raise ValueError("Not Regular Grammar.")
 
         self.symbols = symbols
         self.sigma = sigma
-        self.productions = prods
         self.define_root(s)
         self.name = name
 
-    def is_regular(self, symbols, sigma, prods, s):
+    def regularProductions(self, symbols, sigma, prods):
+        regularProductions = []
+        i = 0
         for p in prods:
             if (p[0] not in symbols) or (p[0] in sigma):
-                return False
+                return None
+            regularProductions.append([p[0], []])
             for beta in p[1]:
-                if (len(beta) > 2) or (beta[0] not in sigma):
-                    return False
-                elif (len(beta) == 2) and\
-                        ((beta[1] in sigma) or (beta[1] not in symbols)):
-                    return False
-        return True
+                if (beta[0] not in sigma):
+                    return None
+                if (len(beta) > 1):
+                    if (beta[1] in sigma) or (beta[1:] not in symbols):
+                        return None
+                    else:
+                        beta = [beta[0], beta[1:]]  # (A -> aB_1) beta = [a, B_1]
+                else:
+                    beta = [beta[0]]
+                regularProductions[i][1].append(beta)
+            i += 1
+        return list(map(lambda p: tuple(p), regularProductions))
 
     def define_root(self, s):
         if (self.symbols is not None) and (s not in self.symbols):
