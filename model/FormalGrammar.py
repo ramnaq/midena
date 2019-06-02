@@ -32,3 +32,12 @@ class FormalGrammar(ABC):
     def apply_productions(self, w):
         pass
 
+    def __str__(self):
+        grammarStr = ""
+        for p in self.productions:
+            grammarStr += p[0] + " -> "
+            for b in p[1]:
+                betas = list(map(lambda s: "".join(s), b))
+                grammarStr += " | ".join(betas)
+            grammarStr += '\n'
+        return grammarStr
