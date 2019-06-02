@@ -3,7 +3,7 @@ import copy
 
 from model.RegularGrammar import RegularGrammar
 
-class FiniteAutomata():
+class FiniteAutomata:
 
     def __init__(self, sigma=[''], table={}, initial="", accepting=[""]):
         self.sigma = sigma
