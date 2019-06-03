@@ -1,9 +1,11 @@
 from tests.test_FA_Determinization import tFA_Determinization
 from tests.test_FA_Minimization import tFA_Minimization
-from tests.test_FA_recognition import tFA_recognition
+from tests.test_FA_Recognition import tFA_recognition
 from tests.test_FA_Operations import tFA_Renaming_States, tFA_Union
 from tests.test_CFG_disk import testCFGReading, testCFGWriting
+from tests.test_RegularConversions import *
 
+divisorStr = "--------------------------------------------------"
 
 def test_FA():
     print('\tTesting Determinization\n')
@@ -22,14 +24,32 @@ def test_FA():
     tFA_Union()
 
 def testCFG():
+    print(divisorStr)
+    print("TEST CFG READING")
+    print(divisorStr)
     testCFGReading()
 
-    print('\n')
+    print(divisorStr)
+    print("TEST CFG WRITING")
+    print(divisorStr)
     testCFGWriting()
 
+
+def testRegularConversions():
+    print(divisorStr)
+    print("TEST REGULAR GRAMMAR -> FINITE AUTOMATA CONVERSION")
+    print(divisorStr)
+    testRGtoFiniteAutomataConversion()
+
+    print(divisorStr)
+    print("TEST FINITE AUTOMATA -> REGULAR GRAMMAR CONVERSION")
+    print(divisorStr)
+    testFAtoRegularGrammarConversion()
 
 if __name__ == '__main__':
     # test_FA()
     tFA_Union()
-
+    print('\n')
     testCFG()
+    print('\n')
+    testRegularConversions()

@@ -1,1 +1,0 @@
-{"name": "PrimeiroUltimoIgualGrammar", "root": "q0", "symbols": ["Q_0", "Q_3", "Q_1", "Q_4", "Q_2"], "sigma": ["b", "a"], "productions": [["Q_0", ["bQ_1", "aQ_3"]], ["Q_1", ["bQ_1", "b", "aQ_2", "aQ_3", "a"]], ["Q_2", ["bQ_1", "aQ_2"]], ["Q_3", ["bQ_4", "b", "aQ_3", "a"]], ["Q_4", ["bQ_4", "aQ_3"]]]}

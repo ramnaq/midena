@@ -29,7 +29,7 @@ class FiniteAutomata:
             for symbol, transitions in t[state].items():
                 fastr += "  "
                 fastr += symbol + ": " + str(transitions) + "\n"
-        return fastr
+        return fastr.strip()
 
     def is_dfa(self):
         for state, transitions in self.table.items():

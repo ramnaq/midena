@@ -40,4 +40,4 @@ class FormalGrammar(ABC):
                 beta = "".join(b)
                 grammarStr += beta + " | "
             grammarStr = grammarStr[:-2] + '\n'  # add \n removing extra "| "
-        return grammarStr
+        return grammarStr.strip()

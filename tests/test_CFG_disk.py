@@ -7,7 +7,7 @@ outFileName = "saves/test_CFG_exported.ext"
 
 def testCFGReading():
     print("Reading " + inFileName + " Context-Free Grammar...")
-    cfg = importGrammar("bla.ext")
+    cfg = importGrammar("saves/test_CFG.ext")
     print(str(cfg))
 
 def testCFGWriting():

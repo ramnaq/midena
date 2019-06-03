@@ -20,7 +20,7 @@ def tFA_Union():
     fa = import_FA('saves/nfa_ends_with_zero.json')
     print('Original FA 1')
     print(fa)
-    fb = import_FA('saves/equal_first_last.json')
+    fb = import_FA("saves/test_FA_equalFirstLast.ext")
     print('Original FA 2')
     print(fb)
 
