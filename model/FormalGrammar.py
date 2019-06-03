@@ -37,7 +37,7 @@ class FormalGrammar(ABC):
         for p in self.productions:
             grammarStr += p[0] + " -> "
             for b in p[1]:
-                betas = list(map(lambda s: "".join(s), b))
-                grammarStr += " | ".join(betas)
-            grammarStr += '\n'
+                beta = "".join(b)
+                grammarStr += beta + " | "
+            grammarStr = grammarStr[:-2] + '\n'  # add \n removing extra "| "
         return grammarStr
