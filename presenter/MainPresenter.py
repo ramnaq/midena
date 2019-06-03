@@ -69,27 +69,27 @@ class MainPresenter(BasePresenter):
             grammar = self.findByName(name)
             if grammar is not None:
                 parent = self.view.ui.centralwidget
-                fileName = promptFileName(parent, 'Export grammar to file',\
-                        'Enter the file name:')
+                fileName = promptFileName(parent, 'Export grammar to file',
+                                          'Enter the file name:')
                 exportGrammar(grammar, fileName)
         else:
             messageBox = QtWidgets.QMessageBox()
             messageBox.setText(
-                    "Please, select in the list the grammar to be exported.")
+                "Please, select in the list the grammar to be exported.")
             messageBox.exec_()
 
     def onImportGrammarBtnClicked(self):
         parent = self.view.ui.centralwidget
-        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(parent,\
-                'Open file', "Midena Files (*.ext *.json)")
+        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(parent,
+                                                            'Open file', "Midena Files (*.ext *.json)")
         if fileName != "":
             grammar = importGrammar(fileName)
             self.view.showGrammar(grammar)
 
     def onExportRegExBtnClicked(self):
         parent = self.view.ui.centralwidget
-        fileName = promptFileName(parent, 'Export regular expression to file',\
-                'Enter the file name:')
+        fileName = promptFileName(parent, 'Export regular expression to file',
+                                  'Enter the file name:')
 
         regexStr = self.view.ui.regExTextEdit.toPlainText()
         # validate if regexStr is a valid regular expression with specific
@@ -98,11 +98,10 @@ class MainPresenter(BasePresenter):
         exportRegEx(regex, fileName)
         self.view.clearRegExField()
 
-
     def onImportRegExBtnClicked(self):
         parent = self.view.ui.centralwidget
-        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(parent,\
-                'Open file', "Midena Files (*.ext *.json)")
+        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(parent,
+                                                            'Open file', "Midena Files (*.ext *.json)")
         if fileName != "":
             regex = importRegEx(fileName)
             self.view.showRegEx(regex)
@@ -131,11 +130,12 @@ class MainPresenter(BasePresenter):
         else:
             self.on_fa_item_changed(self.current_fa.determinize())
 
+    def on_minimize_fa(self):
+        self.on_fa_item_changed(self.current_fa.minimize())
+
     def on_test_word(self, text: str):
         if not self.current_fa:
             print("Error: No FA active")
             return
         accept = self.current_fa.accept(text)
         self.view.show_test_word_msg('accepted' if accept else 'rejected')
-
-
