@@ -5,6 +5,7 @@ from model.regular_obj_conversion import *
 
 print("Importing grammar...")
 rg = importGrammar("/home/sidharta/workspace/midena/conv.ext")
+print(str(rg))
 
 print("Converting grammar to Finite Automata...")
 fa = regular_grammar_to_automata(rg)

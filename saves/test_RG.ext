@@ -1,0 +1,1 @@
+{"name": "Jo\u00e3o", "root": "S", "symbols": ["A"], "sigma": ["0", "1"], "productions": [["S", ["0", "0A"]], ["A", ["0A", "1A", "1", "0"]]], "type": 3}
