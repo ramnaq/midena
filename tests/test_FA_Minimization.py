@@ -8,3 +8,6 @@ def tFA_Minimization():
     m = fa.minimize()
     print('Minimized FA')
     print(m)
+
+def test_FA_Minimization():
+    tFA_Minimization()

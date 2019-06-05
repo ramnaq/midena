@@ -15,3 +15,6 @@ def tFA_Determinization():
     m = fa.determinize()
     print('Determinized FA')
     print(m)
+
+def test_FA_Determinization():
+    tFA_Determinization()

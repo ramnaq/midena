@@ -13,9 +13,9 @@ def xtest(dfa, words, expected, msg='Success!', start=0):
     print(f'{msg}\n')
 
 
-def tFA_recognition():
+def tFA_Recognition():
     # starts and ends with same symbol
-    dfa = import_FA('saves/equal_first_last.json')
+    dfa = import_FA('saves/test_FA_equalFirstLast.ext')
     print(dfa)
 
     right_words = ['', 'a', 'b', 'aa', 'bb', 'aabbaba', 'bababab', 'bbbab']
@@ -35,3 +35,6 @@ def tFA_recognition():
     wrong_words = ['1', '01', '0001', '101', '11101', '01010101', '101010101']
     xtest(dfa, wrong_words, False, msg='Wrong words correctly not accepted.',
           start=len(right_words))
+
+def test_FA_Recognition():
+    tFA_Recognition()

@@ -25,3 +25,6 @@ def testFAtoRegularGrammarConversion():
     fa = finite_automata_to_grammar(fa)
     print(str(fa))
 
+def test_RegularConversions():
+    testRGtoFiniteAutomataConversion()
+    testFAtoRegularGrammarConversion()

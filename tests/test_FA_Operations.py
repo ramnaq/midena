@@ -27,3 +27,8 @@ def tFA_Union():
     fc = union(fa, fb)
     print('Union result')
     print(fc)
+
+def test_FA_Operations():
+    tFA_Operations()
+    tFA_Renaming_States()
+    tFA_Union()

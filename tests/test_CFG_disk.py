@@ -17,3 +17,6 @@ def testCFGWriting():
     exportGrammar(cfg, outFileName)
     print("Grammar written!")
 
+def test_CFG_disk():
+    testCFGReading()
+    testCFGWriting()
