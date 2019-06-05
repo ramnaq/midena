@@ -129,3 +129,4 @@ class CFGValidator(GrammarTypeValidator):
 class CSGValidator(GrammarTypeValidator):
     def validProductions(self, grammar):
         ...
+
