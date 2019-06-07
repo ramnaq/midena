@@ -1,20 +1,26 @@
+import utils
+
 from model.FileUtil import import_FA
 
 
-def tFA_Determinization():
-    fa = import_FA('saves/test_determinization.json')
+msgFADeterminization = "TESTING FA DETERMINIZATION"
+
+IN_FNAME = "saves/test_Determinization.ext"
+
+def tFA_Determinization(fname=IN_FNAME):
+    fa = import_FA(fname)
     print('Original NFA')
-    print(fa)
-    m = fa.determinize()
-    print('Determinized FA')
-    print(m)
-    fa = import_FA('saves/nfa_ends_with_zero.json')
-    print('Second test\n')
-    print('Other NFA')
     print(fa)
     m = fa.determinize()
     print('Determinized FA')
     print(m)
 
 def test_FA_Determinization():
-    tFA_Determinization()
+    infile = utils.promptFile(
+            "FA to be determinized (e.g %s) [OPTIONAL]: " % IN_FNAME,
+            optional=True)
+    if infile == "":
+        infile = IN_FNAME
+
+    utils.startTestMsg(msgFADeterminization)
+    tFA_Determinization(infile)

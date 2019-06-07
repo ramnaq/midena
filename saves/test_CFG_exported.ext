@@ -1,1 +1,1 @@
-{"name": "CFG_testing", "root": "S", "symbols": ["A"], "sigma": ["1", "0"], "productions": [["S", [["0", "A", "1"], ["0", "1"]]]], "type": 2}
+{"name": "CFG_testing", "root": "S", "symbols": ["A"], "sigma": ["0", "1"], "productions": [["S", [["0", "A", "1"], ["0", "1"]]]], "type": 2}

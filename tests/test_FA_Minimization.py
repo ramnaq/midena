@@ -1,8 +1,13 @@
+import utils
+
 from model.FileUtil import import_FA
 
 
-def tFA_Minimization():
-    fa = import_FA('saves/test_minimization.json')
+msgFAMinimization = "TESTING FA MINIMIZATION"
+IN_FNAME = "saves/test_Minimization.ext"
+
+def tFA_Minimization(fname=IN_FNAME):
+    fa = import_FA(fname)
     print('Original FA')
     print(fa)
     m = fa.minimize()
@@ -10,4 +15,11 @@ def tFA_Minimization():
     print(m)
 
 def test_FA_Minimization():
+    infile = utils.promptFile(
+            "FA to be minimized (e.g %s) [OPTIONAL]: " % IN_FNAME,
+            optional=True)
+    if infile == "":
+        infile = IN_FNAME
+
+    utils.startTestMsg(msgFAMinimization)
     tFA_Minimization()

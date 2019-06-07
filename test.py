@@ -2,12 +2,14 @@ import os.path
 
 from sys import argv
 
+import utils
 from tests.test_CFG_disk import *
 from tests.test_FA_Operations import *
 from tests.test_FA_Recognition import *
 from tests.test_FA_Minimization import *
 from tests.test_RegularConversions import *
 from tests.test_FA_Determinization import *
+
 
 err = "[ERROR]"
 
@@ -22,12 +24,15 @@ else:
     for arg in argv[2:]:
         print("T E S T  " + arg + "\n")
         func_name = arg
-        if not os.path.isfile("tests/" + func_name + ".py"):
+        try:
+            utils.findFile("tests/" + func_name + ".py")
+        except FileNotFoundError:
             print("%s Test file %s not found!" % err % func_name)
+            continue
+
+        function = possibles.get(func_name)
+        if not function:
+            print("%s Functions %s not implemented" % err % func_name)
         else:
-            function = possibles.get(func_name)
-            if not function:
-                print("%s Functions %s not implemented" % err % func_name)
-            else:
-                function()
-                print("\n")
+            function()
+            print("\n")

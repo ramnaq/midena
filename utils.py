@@ -1,5 +1,18 @@
+import os.path
+
 from model.RegularGrammar import RegularGrammar
 from model.FiniteAutomata import FiniteAutomata
+
+
+divisorStr = "--------------------------------------------------"
+
+def printError(msg):
+    print("[ERROR]", msg)
+
+def startTestMsg(msg):
+    print(divisorStr)
+    print(msg)
+    print(divisorStr)
 
 def remove_flag(flags, flag):
     if flags & flag:
@@ -84,4 +97,19 @@ def next_states_separated(transitions, symbol):
     for ns in transitions[symbol]:
         nextStates += ns.split(", ")
     return nextStates
+
+def promptFile(msg, optional = False):
+    while True:
+        try:
+            fname = input(msg)
+            if optional and fname != "":
+                findFile(fname)
+            return fname
+        except FileNotFoundError:
+            printError("File not found!")
+
+def findFile(path):
+    if not os.path.isfile(path):
+        raise FileNotFoundError()
+    return True
 
