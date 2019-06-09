@@ -55,7 +55,7 @@ class FiniteAutomata:
     def update_sigma(self, prev, current):
         if prev == '':
             if current in self.sigma:
-                print('Error: symbol already exists.')
+                # print('Error: symbol already exists.')
                 return
             self.sigma.append(current)
             for q in self.states():
@@ -182,7 +182,7 @@ class FiniteAutomata:
             if st == '-':
                 return [state]
             closure.update(self.e_closure(st))
-            return list(closure)
+        return list(closure)
 
     def e_closure_list(self, states: list) -> list:
         closure = []
@@ -312,6 +312,30 @@ class FiniteAutomata:
 
 def union(fa: FiniteAutomata, fb: FiniteAutomata) -> FiniteAutomata:
     ufa = deepcopy(fa)
-    fb.rename_states(len(fa.states()))
+    ufa.name = fa.name + 'U' + fb.name
+    ufa.rename_states(1)
+    fb.rename_states(len(fa.states()) + 1)
 
-    return ufa
+    # sigma union
+    for s in fa.sigma:
+        if s not in fb.sigma:
+            fb.update_sigma('', s)
+
+    for s in fb.sigma:
+        if s not in ufa.sigma:
+            ufa.update_sigma('', s)
+
+    # add fB states to UFA
+    ufa.table.update(fb.table)
+    ufa.accepting += fb.accepting
+
+    init = 'q0'
+    epsilon = '&'
+    ufa.add_state(init)
+    if epsilon not in ufa.sigma:
+        ufa.update_sigma('', epsilon)
+
+    ufa.table[init][epsilon] = [ufa.initial, fb.initial]
+    ufa.initial = init
+
+    return ufa.determinize()

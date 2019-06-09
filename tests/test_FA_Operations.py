@@ -10,8 +10,9 @@ IN_FNAME = "saves/test_FA_myfirst.ext"
 IN_FNAME1 = "saves/test_Nfa_ends_with_zero.ext"
 IN_FNAME2 = "saves/test_FA_equalFirstLast.ext"
 
+
 def tFA_Operations(fname=IN_FNAME, fname1=IN_FNAME1, fname2=IN_FNAME2):
-    tFA_Renaming_States(fname)
+    # tFA_Renaming_States(fname)
     tFA_Union(fname1, fname2)
 
 
@@ -48,7 +49,7 @@ def test_FA_Operations():
             "FA1 to do union (e.g %s) [OPTIONAL]: " % IN_FNAME1,
             optional=True)
     if infile1 == "":
-        infile1 = IN_FNAME2
+        infile1 = IN_FNAME1
 
     infile2 = utils.promptFile(
             "FA2 to do union (e.g %s) [OPTIONAL]: " % IN_FNAME2,
