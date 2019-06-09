@@ -7,7 +7,7 @@ from .Minimization import Partition, Group
 
 class FiniteAutomata:
 
-    def __init__(self, sigma=[''], table={}, initial="", accepting=[""]):
+    def __init__(self, sigma=[''], table={}, initial="", accepting=[]):
         self.sigma = sigma
         self.table = table
         self.initial = initial
@@ -251,11 +251,14 @@ class FiniteAutomata:
                 for e in states_group:  # b e a u t i f u l
                     break               # p y t h o n
                 transition = det.table[e][symbol][0]
-                g = aux_partK.group_of(transition)
-                unified_transition = self.state_from_list(g)
-                if unified_transition not in minimized.states():
-                    minimized.add_state(unified_transition)
-                minimized.table[unified_state][symbol] = unified_transition
+                if transition == '-':
+                    minimized.table[unified_state][symbol] = '-'
+                else:
+                    g = aux_partK.group_of(transition)
+                    unified_transition = self.state_from_list(g)
+                    if unified_transition not in minimized.states():
+                        minimized.add_state(unified_transition)
+                    minimized.table[unified_state][symbol] = [unified_transition]
 
         return minimized
 
