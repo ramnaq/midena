@@ -222,7 +222,8 @@ class FiniteAutomata:
             partK = Partition()
             for group in partK_1:
                 for elem in group:
-                    g = det.fit_in_group(elem, partK, partK_1)
+                    g = det.fit_in_group(elem, 
+group, partK, partK_1)
                     if g:
                         g.add(elem)
                     else:
@@ -263,10 +264,10 @@ class FiniteAutomata:
 
         return minimized
 
-    def fit_in_group(self, elem, partitionK, partitionK_1) -> Group:
-        for group in partitionK.groups:
-            if self.equivalence(elem, next(iter(group)), partitionK_1):
-                return group
+    def fit_in_group(self, elem, group, partitionK, partitionK_1) -> Group:
+        for e in group:
+            if self.equivalence(elem, e, partitionK_1):
+                return partitionK.group_of(e)
         return None
 
     def equivalence(self, a, b, partition) -> bool:
