@@ -258,7 +258,8 @@ class FiniteAutomata:
                     unified_transition = self.state_from_list(g)
                     if unified_transition not in minimized.states():
                         minimized.add_state(unified_transition)
-                    minimized.table[unified_state][symbol] = [unified_transition]
+                    minimized.table[unified_state][symbol] = [
+                        unified_transition]
 
         return minimized
 
@@ -338,4 +339,4 @@ def union(fa: FiniteAutomata, fb: FiniteAutomata) -> FiniteAutomata:
     ufa.table[init][epsilon] = [ufa.initial, fb.initial]
     ufa.initial = init
 
-    return ufa.determinize()
+    return ufa.determinize().minimize()
