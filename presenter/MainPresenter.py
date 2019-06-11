@@ -1,7 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from model.FileUtil import *
-from model.RegularGrammar import RegularGrammar
 from model.RegularExpression import RegularExpression
 from model.regular_obj_conversion import *
 from presenter.BasePresenter import BasePresenter
@@ -48,7 +47,7 @@ class MainPresenter(BasePresenter):
         grammar = None
         try:
             productions = read_productions(self.view.ui.grammarTableWidget)
-            grammar = RegularGrammar(symbols, sigma, productions, s, name)
+            grammar = createGrammar(symbols, sigma, productions, s, name)
             self.view.addGrammarToListBox(grammar)
         except(ValueError):
             ...
@@ -91,9 +90,11 @@ class MainPresenter(BasePresenter):
         if (selectedGrammar is not None):
             name = selectedGrammar.text()
             grammar = self.findByName(name)
-            if grammar is not None:
+            if (grammar is not None) and (grammar.type == 3):
                 fa = rg_to_fa(grammar)
                 self.view.showFA(fa)
+            else:
+                showWarning("The grammar must be of type 3 (a Regular Grammar)")
         else:
             showWarning(
                     "Please, select in the list the grammar to be converted")
