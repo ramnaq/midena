@@ -19,7 +19,7 @@ class MainPresenter(BasePresenter):
 
     def onImportFA(self, path):
         self.current_fa = import_FA(path)
-        self.view.show_FA(self.current_fa)
+        self.view.showFA(self.current_fa)
 
     def onSaveFAClicked(self):
         if self.current_fa is not None:
@@ -74,10 +74,8 @@ class MainPresenter(BasePresenter):
                         'Enter the file name:')
                 exportGrammar(grammar, fileName)
         else:
-            messageBox = QtWidgets.QMessageBox()
-            messageBox.setText(
-                "Please, select in the list the grammar to be exported.")
-            messageBox.exec_()
+            showWarning(
+                    "Please, select in the list the grammar to be exported.")
 
     def onImportGrammarBtnClicked(self):
         parent = self.view.ui.centralwidget
@@ -89,7 +87,17 @@ class MainPresenter(BasePresenter):
             self.view.showGrammar(grammar)
 
     def onGrammarToFABtnClicked(self):
-        ...
+        selectedGrammar = self.view.ui.grammarsWidgetList.currentItem()
+        if (selectedGrammar is not None):
+            name = selectedGrammar.text()
+            grammar = self.findByName(name)
+            if grammar is not None:
+                fa = rg_to_fa(grammar)
+                self.view.showFA(fa)
+        else:
+            showWarning(
+                    "Please, select in the list the grammar to be converted")
+
 
     def onExportRegExBtnClicked(self):
         parent = self.view.ui.centralwidget
@@ -105,8 +113,10 @@ class MainPresenter(BasePresenter):
 
     def onImportRegExBtnClicked(self):
         parent = self.view.ui.centralwidget
-        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(parent,
-                                                            'Open file', "Midena Files (*.ext *.json)")
+        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(
+                parent,
+                'Open file',
+                "Midena Files (*.ext *.json)")
         if fileName != "":
             regex = importRegEx(fileName)
             self.view.showRegEx(regex)
@@ -125,7 +135,7 @@ class MainPresenter(BasePresenter):
     def on_fa_item_changed(self, updated_fa):
         try:
             self.current_fa = updated_fa
-            self.view.show_FA(updated_fa)
+            self.view.showFA(updated_fa)
         except Exception as exc:
             print(f'Exception: {exc}')
 

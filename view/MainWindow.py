@@ -147,7 +147,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if path:
             self.faSave.emit(path)
 
-    def show_FA(self, fa: FiniteAutomata):
+    def showFA(self, fa: FiniteAutomata):
         self.ui.tableWidget.blockSignals(True)
         self.ui.tableWidget.clear()
         self.current_fa = fa
@@ -209,6 +209,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.grammar_name_textEdit.setText(g.name)
         self._showProductions(g.productions)
 
+    def grammarToFA():
+        ...
+
     def showRegEx(self, re):
         self.ui.regExTextEdit.setText(str(re))
 
@@ -217,12 +220,15 @@ class MainWindow(QtWidgets.QMainWindow):
         tableWidget.setRowCount(0)
         row = 0
         for p in productions:
-            alpha, beta = p[0], "|".join(p[1])
+
+            # b = ["a", "B"] -> b = "aB"
+            joinedBetas = list(map(lambda b: "".join(b), p[1]))
+            alpha, betas = p[0], "|".join(joinedBetas)  # betas = b1|b2
             alphaItem = QtWidgets.QTableWidgetItem(alpha)
-            betaItem = QtWidgets.QTableWidgetItem(beta)
+            betasItem = QtWidgets.QTableWidgetItem(betas)
             self.addRowToGrammarTable()
             tableWidget.setItem(row, 0, alphaItem)
-            tableWidget.setItem(row, 2, betaItem)
+            tableWidget.setItem(row, 2, betasItem)
             row += 1
 
     def column_to_symbol(self, column):
