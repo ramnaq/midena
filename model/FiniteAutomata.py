@@ -279,22 +279,23 @@ class FiniteAutomata:
         return True
 
     def rename_states(self, start):
+        c = deepcopy(self)
         new_table = {}
         new_names = {}
         new_initial = ""
         new_accepting = []
 
-        for state in self.table.keys():
+        for state in c.table.keys():
             new_names[state] = "q" + str(start)
-            if state == self.initial:
+            if state == c.initial:
                 new_initial = new_names[state]
-            if state in self.accepting:
+            if state in c.accepting:
                 new_accepting.append(new_names[state])
             start += 1
 
         # Renomear estados
-        for state in self.table.keys():
-            new_table[new_names[state]] = self.table[state]
+        for state in c.table.keys():
+            new_table[new_names[state]] = c.table[state]
 
         # Renomear estados nas transições
         for state, state_transitions in new_table.items():
@@ -306,9 +307,10 @@ class FiniteAutomata:
                     else:
                         new_table[state][symbol].append(new_names[i])
 
-        self.initial = new_initial
-        self.accepting = new_accepting
-        self.table = new_table.copy()
+        c.initial = new_initial
+        c.accepting = new_accepting
+        c.table = new_table.copy()
+        return c
 
     def complete(self):
         cfa = deepcopy(self)
@@ -336,22 +338,21 @@ class FiniteAutomata:
 
 
 def union(fa, fb):
-    ufa = deepcopy(fa)
+    ufa = fa.rename_states(1)
     ufa.name = fa.name + 'U' + fb.name
-    ufa.rename_states(1)
-    fb.rename_states(len(fa.states()) + 1)
+    fbcopy = fb.rename_states(len(fa.states()) + 1)
 
     # sigma union
     for s in fa.sigma:
-        if s not in fb.sigma:
-            fb.update_sigma('', s)
-    for s in fb.sigma:
+        if s not in fbcopy.sigma:
+            fbcopy.update_sigma('', s)
+    for s in fbcopy.sigma:
         if s not in ufa.sigma:
             ufa.update_sigma('', s)
 
-    # add fB states to UFA
-    ufa.table.update(fb.table)
-    ufa.accepting += fb.accepting
+    # add FB states to UFA
+    ufa.table.update(fbcopy.table)
+    ufa.accepting += fbcopy.accepting
 
     init = 'q0'
     epsilon = '&'
@@ -359,25 +360,15 @@ def union(fa, fb):
     if epsilon not in ufa.sigma:
         ufa.update_sigma('', epsilon)
 
-    ufa.table[init][epsilon] = [ufa.initial, fb.initial]
+    ufa.table[init][epsilon] = [ufa.initial, fbcopy.initial]
     ufa.initial = init
     return ufa.determinize().minimize()
 
 
 def intersection(fa, fb):
     faC = fa.complement()
-    print('--------')
-    print(faC)
     fbC = fb.complement()
-    print('--------')
-    print(fbC)
     fUnion = union(faC, fbC)
-    print('--------')
-    print(fUnion)
     fMin = fUnion.minimize()
-    print('--------')
-    print(fMin)
     fResult = fMin.complement()
-    print('--------')
-    print(fResult)
     return fResult
