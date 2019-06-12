@@ -222,8 +222,7 @@ class FiniteAutomata:
             partK = Partition()
             for group in partK_1:
                 for elem in group:
-                    g = det.fit_in_group(elem, 
-group, partK, partK_1)
+                    g = det.fit_in_group(elem, group, partK, partK_1)
                     if g:
                         g.add(elem)
                     else:
@@ -286,7 +285,7 @@ group, partK, partK_1)
         new_accepting = []
 
         for state in self.table.keys():
-            new_names[state] = "q"+str(start)
+            new_names[state] = "q" + str(start)
             if state == self.initial:
                 new_initial = new_names[state]
             if state in self.accepting:
@@ -311,8 +310,32 @@ group, partK, partK_1)
         self.accepting = new_accepting
         self.table = new_table.copy()
 
+    def complete(self):
+        cfa = deepcopy(self)
+        dead = 'qd'
+        if not cfa.is_dfa():
+            cfa.determinize()
+        add = False
+        for state in cfa.states():
+            for symbol in cfa.sigma:
+                if symbol not in cfa.table[state] or \
+                        cfa.table[state][symbol] == '-' or \
+                        cfa.table[state][symbol] == ['-']:
+                    cfa.table[state][symbol] = [dead]
+                    add = True
+        if add:
+            if dead not in cfa.states():
+                cfa.table[dead] = {x: [dead] for x in cfa.sigma}
+        return cfa
 
-def union(fa: FiniteAutomata, fb: FiniteAutomata) -> FiniteAutomata:
+    def complement(self):
+        cfa = self.complete()
+        cfa.accepting = cfa.states() - cfa.accepting
+        cfa.name = cfa.name + "Complement"
+        return cfa
+
+
+def union(fa, fb):
     ufa = deepcopy(fa)
     ufa.name = fa.name + 'U' + fb.name
     ufa.rename_states(1)
@@ -322,7 +345,6 @@ def union(fa: FiniteAutomata, fb: FiniteAutomata) -> FiniteAutomata:
     for s in fa.sigma:
         if s not in fb.sigma:
             fb.update_sigma('', s)
-
     for s in fb.sigma:
         if s not in ufa.sigma:
             ufa.update_sigma('', s)
@@ -339,5 +361,23 @@ def union(fa: FiniteAutomata, fb: FiniteAutomata) -> FiniteAutomata:
 
     ufa.table[init][epsilon] = [ufa.initial, fb.initial]
     ufa.initial = init
-
     return ufa.determinize().minimize()
+
+
+def intersection(fa, fb):
+    faC = fa.complement()
+    print('--------')
+    print(faC)
+    fbC = fb.complement()
+    print('--------')
+    print(fbC)
+    fUnion = union(faC, fbC)
+    print('--------')
+    print(fUnion)
+    fMin = fUnion.minimize()
+    print('--------')
+    print(fMin)
+    fResult = fMin.complement()
+    print('--------')
+    print(fResult)
+    return fResult

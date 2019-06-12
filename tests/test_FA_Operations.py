@@ -1,7 +1,7 @@
 import utils
 
 from model.FileUtil import import_FA
-from model.FiniteAutomata import union
+from model.FiniteAutomata import union, intersection
 
 
 msgFAOperations = "TESTING FA OPERATIONS"
@@ -9,11 +9,15 @@ msgFAOperations = "TESTING FA OPERATIONS"
 IN_FNAME = "saves/test_FA_myfirst.ext"
 IN_FNAME1 = "saves/test_Nfa_ends_with_zero.ext"
 IN_FNAME2 = "saves/test_FA_equalFirstLast.ext"
+IN_FNAME3 = "saves/test_Intersection1.ext"
+IN_FNAME4 = "saves/test_Intersection2.ext"
 
 
 def tFA_Operations(fname=IN_FNAME, fname1=IN_FNAME1, fname2=IN_FNAME2):
     # tFA_Renaming_States(fname)
-    tFA_Union(fname1, fname2)
+    # tFA_Union(fname1, fname2)
+    tFA_Complete(fname1)
+    tFA_Intersection(IN_FNAME3, IN_FNAME4)
 
 
 def tFA_Renaming_States(fname=IN_FNAME):
@@ -36,6 +40,28 @@ def tFA_Union(fname1=IN_FNAME1, fname2=IN_FNAME2):
     fc = union(fa, fb)
     print('Union result')
     print(fc)
+
+
+def tFA_Intersection(fname1=IN_FNAME1, fname2=IN_FNAME2):
+    fa = import_FA(fname1)
+    print('Original FA 1')
+    print(fa)
+    fb = import_FA(fname2)
+    print('Original FA 2')
+    print(fb)
+
+    fc = intersection(fa, fb)
+    print('Intersection result')
+    print(fc)
+
+
+def tFA_Complete(fname1=IN_FNAME1):
+    fa = import_FA(fname1)
+    print('Original FA 1')
+    print(fa)
+
+    print('Complete result')
+    print(fa.complete())
 
 
 def test_FA_Operations():
