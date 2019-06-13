@@ -1,7 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from model.FileUtil import *
-from model.RegularGrammar import RegularGrammar
 from model.RegularExpression import RegularExpression
 from model.regular_obj_conversion import *
 from presenter.BasePresenter import BasePresenter
@@ -14,18 +13,18 @@ class MainPresenter(BasePresenter):
         super().__init__(view)
         self.grammars = []
 
-    def on_create_fa_clicked(self):
+    def onCreateFAClicked(self):
         self.current_fa = None
 
-    def on_import_fa(self, path):
+    def onImportFA(self, path):
         self.current_fa = import_FA(path)
-        self.view.show_FA(self.current_fa)
+        self.view.showFA(self.current_fa)
 
-    def on_save_fa_clicked(self):
+    def onSaveFAClicked(self):
         if self.current_fa is not None:
             export_FA(self.current_fa, "tests/other_fa.json")
 
-    def on_add_prod_clicked(self):
+    def onAddProdClicked(self):
         self.view.addRowToGrammarTable()
 
     def onRemoveProductionClicked(self):
@@ -37,7 +36,7 @@ class MainPresenter(BasePresenter):
             grammar = finite_automata_to_grammar(self.current_fa)
             self.view.showGrammar(grammar)
 
-    def on_create_grammar_clicked(self):
+    def onCreateGrammarClicked(self):
         s = self.view.ui.initial_prod_textEdit.toPlainText()
         symbols_entry = self.view.ui.symbols_textEdit.toPlainText()
         symbols = set(symbols_entry.split(','))
@@ -48,7 +47,7 @@ class MainPresenter(BasePresenter):
         grammar = None
         try:
             productions = read_productions(self.view.ui.grammarTableWidget)
-            grammar = RegularGrammar(symbols, sigma, productions, s, name)
+            grammar = createGrammar(symbols, sigma, productions, s, name)
             self.view.addGrammarToListBox(grammar)
         except(ValueError):
             ...
@@ -69,22 +68,37 @@ class MainPresenter(BasePresenter):
             grammar = self.findByName(name)
             if grammar is not None:
                 parent = self.view.ui.centralwidget
-                fileName = promptFileName(parent, 'Export grammar to file',
-                                          'Enter the file name:')
+                fileName = promptFileName(parent,
+                        'Export grammar to file',
+                        'Enter the file name:')
                 exportGrammar(grammar, fileName)
         else:
-            messageBox = QtWidgets.QMessageBox()
-            messageBox.setText(
-                "Please, select in the list the grammar to be exported.")
-            messageBox.exec_()
+            showWarning(
+                    "Please, select in the list the grammar to be exported.")
 
     def onImportGrammarBtnClicked(self):
         parent = self.view.ui.centralwidget
-        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(parent,
-                                                            'Open file', "Midena Files (*.ext *.json)")
+        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(
+                parent,
+                'Open file', "Midena Files (*.ext *.json)")
         if fileName != "":
             grammar = importGrammar(fileName)
             self.view.showGrammar(grammar)
+
+    def onGrammarToFABtnClicked(self):
+        selectedGrammar = self.view.ui.grammarsWidgetList.currentItem()
+        if (selectedGrammar is not None):
+            name = selectedGrammar.text()
+            grammar = self.findByName(name)
+            if (grammar is not None) and (grammar.type == 3):
+                fa = rg_to_fa(grammar)
+                self.view.showFA(fa)
+            else:
+                showWarning("The grammar must be of type 3 (a Regular Grammar)")
+        else:
+            showWarning(
+                    "Please, select in the list the grammar to be converted")
+
 
     def onExportRegExBtnClicked(self):
         parent = self.view.ui.centralwidget
@@ -100,8 +114,10 @@ class MainPresenter(BasePresenter):
 
     def onImportRegExBtnClicked(self):
         parent = self.view.ui.centralwidget
-        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(parent,
-                                                            'Open file', "Midena Files (*.ext *.json)")
+        fileName, _ = QtWidgets.QFileDialog.getOpenFileName(
+                parent,
+                'Open file',
+                "Midena Files (*.ext *.json)")
         if fileName != "":
             regex = importRegEx(fileName)
             self.view.showRegEx(regex)
@@ -120,7 +136,7 @@ class MainPresenter(BasePresenter):
     def on_fa_item_changed(self, updated_fa):
         try:
             self.current_fa = updated_fa
-            self.view.show_FA(updated_fa)
+            self.view.showFA(updated_fa)
         except Exception as exc:
             print(f'Exception: {exc}')
 

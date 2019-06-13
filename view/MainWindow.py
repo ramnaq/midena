@@ -71,41 +71,47 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.regExTextEdit.setText("")
 
     def add_listener(self, presenter):
-        self.ui.btn_create_fa.clicked.connect(self.on_create_fa_clicked)
-        self.ui.btn_import_fa.clicked.connect(self.on_import_fa_clicked)
-        self.ui.btn_save_fa.clicked.connect(self.on_save_fa_clicked)
+
+        # Automatas
+        self.ui.btn_create_fa.clicked.connect(self.onCreateFAClicked)
+        self.ui.btn_import_fa.clicked.connect(self.onImportFAClicked)
+        self.ui.btn_save_fa.clicked.connect(self.onSaveFAClicked)
         self.ui.btn_determinize_fa.clicked.connect(presenter.on_determinize_fa)
         self.ui.btn_minimize_fa.clicked.connect(presenter.on_minimize_fa)
         self.ui.btn_test_word.clicked.connect(self.on_test_word_clicked)
-
-        self.ui.tableWidget.itemSelectionChanged.connect(
-            self.on_fa_item_selected)
-        self.ui.tableWidget.itemChanged.connect(self.on_fa_item_changed)
-
-        self.faImport.connect(presenter.on_import_fa)
+        self.faImport.connect(presenter.onImportFA)
         self.faSave.connect(presenter.on_save_fa)
         self.faItemChanged.connect(presenter.on_fa_item_changed)
         self.ui.convertFAtoRGBtn.clicked.connect(
             presenter.onConvertFAtoRGBtnClicked)
 
-        self.ui.btn_add_prod.clicked.connect(presenter.on_add_prod_clicked)
+        self.ui.tableWidget.itemSelectionChanged.connect(
+            self.on_fa_item_selected)
+        self.ui.tableWidget.itemChanged.connect(self.on_fa_item_changed)
+
+        # Grammars
+        self.ui.btn_add_prod.clicked.connect(presenter.onAddProdClicked)
         self.ui.removeProductionBtn.clicked.connect(
             presenter.onRemoveProductionClicked)
         self.ui.btn_create_grammar.clicked.connect(
-            presenter.on_create_grammar_clicked)
+            presenter.onCreateGrammarClicked)
         self.ui.btn_remove_grammar.clicked.connect(
             presenter.on_remove_grammar_clicked)
         self.ui.exportGrammarBtn.clicked.connect(
             presenter.onExportGrammarBtnClicked)
         self.ui.importGrammarBtn.clicked.connect(
             presenter.onImportGrammarBtnClicked)
+        self.ui.grammarToFABtn.clicked.connect(
+            presenter.onGrammarToFABtnClicked)
+
+        # Regular Expression
         self.ui.exportRegExBtn.clicked.connect(
             presenter.onExportRegExBtnClicked)
         self.ui.importRegExBtn.clicked.connect(
             presenter.onImportRegExBtnClicked)
         self.faTestWord.connect(presenter.on_test_word)
 
-    def on_create_fa_clicked(self):
+    def onCreateFAClicked(self):
         num_states, ok = QtWidgets.QInputDialog.getInt(
             self, "States", "Number of states:", 4, 1, 20, 1
         )
@@ -127,12 +133,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.current_fa = FiniteAutomata(sigma, table, initial, accepting)
         self.faItemChanged.emit(self.current_fa)
 
-    def on_import_fa_clicked(self):
+    def onImportFAClicked(self):
         path, _ = QtWidgets.QFileDialog.getOpenFileName(self)
         if path:
             self.faImport.emit(path)
 
-    def on_save_fa_clicked(self):
+    def onSaveFAClicked(self):
         if not self.current_fa:
             print("Error: No FA active")
             return
@@ -141,7 +147,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if path:
             self.faSave.emit(path)
 
-    def show_FA(self, fa: FiniteAutomata):
+    def showFA(self, fa: FiniteAutomata):
         self.ui.tableWidget.blockSignals(True)
         self.ui.tableWidget.clear()
         self.current_fa = fa
@@ -203,6 +209,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.grammar_name_textEdit.setText(g.name)
         self._showProductions(g.productions)
 
+    def grammarToFA():
+        ...
+
     def showRegEx(self, re):
         self.ui.regExTextEdit.setText(str(re))
 
@@ -211,12 +220,15 @@ class MainWindow(QtWidgets.QMainWindow):
         tableWidget.setRowCount(0)
         row = 0
         for p in productions:
-            alpha, beta = p[0], "|".join(p[1])
+
+            # b = ["a", "B"] -> b = "aB"
+            joinedBetas = list(map(lambda b: "".join(b), p[1]))
+            alpha, betas = p[0], "|".join(joinedBetas)  # betas = b1|b2
             alphaItem = QtWidgets.QTableWidgetItem(alpha)
-            betaItem = QtWidgets.QTableWidgetItem(beta)
+            betasItem = QtWidgets.QTableWidgetItem(betas)
             self.addRowToGrammarTable()
             tableWidget.setItem(row, 0, alphaItem)
-            tableWidget.setItem(row, 2, betaItem)
+            tableWidget.setItem(row, 2, betasItem)
             row += 1
 
     def column_to_symbol(self, column):

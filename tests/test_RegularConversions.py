@@ -13,7 +13,7 @@ def testRGtoFiniteAutomataConversion():
     print(str(rg))
 
     print("Converting to Finite Automata...")
-    fa = regular_grammar_to_automata(rg)
+    fa = rg_to_fa(rg)
     print(str(fa))
 
 def testFAtoRegularGrammarConversion():
@@ -22,7 +22,7 @@ def testFAtoRegularGrammarConversion():
     print(str(fa))
 
     print("Converting to Regular Grammar...")
-    fa = finite_automata_to_grammar(fa)
+    fa = fa_to_rg(fa)
     print(str(fa))
 
 def test_RegularConversions():
