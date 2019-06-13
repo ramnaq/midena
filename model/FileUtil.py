@@ -1,5 +1,6 @@
 import json
 from model.FiniteAutomata import FiniteAutomata
+from model.ContextFreeGrammar import ContextFreeGrammar
 from model.RegularGrammar import RegularGrammar
 from model.RegularExpression import RegularExpression
 
@@ -49,7 +50,9 @@ def importGrammar(path):
     symbols = set(data["symbols"])
     sigma = set(data["sigma"])
     productions = [tuple(p) for p in data["productions"]]
-    return RegularGrammar(symbols, sigma, productions, root, name)
+    grammarType = data["type"]
+
+    return createGrammar(symbols, sigma, productions, root, name)
 
 def exportGrammar(g, path):
     gJson = {}
@@ -58,6 +61,7 @@ def exportGrammar(g, path):
     gJson["symbols"] = list(g.symbols)
     gJson["sigma"] = list(g.sigma)
     gJson["productions"] = g.productions
+    gJson["type"] = g.type
 
     with open(path, 'w') as outfile:
         json.dump(gJson, outfile)
@@ -74,3 +78,15 @@ def importRegEx(path):
 def exportRegEx(re, path):
     with open(path, 'w') as outfile:
         outfile.write(str(re))
+
+def createGrammar(symbols, sigma, productions, root, name):
+    # TODO: evaluate the usage of parameter 'type' to instantiate the proper
+    #       object.
+    # Maybe some design pattern can be properly applyed to this case.
+    grammar = None
+    try:
+        grammar = RegularGrammar(symbols, sigma, productions, root, name)
+    except:
+        grammar =\
+            ContextFreeGrammar(symbols, sigma, productions, root, name)
+    return grammar

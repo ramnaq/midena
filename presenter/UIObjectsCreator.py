@@ -40,3 +40,9 @@ def promptFileName(parent, promptName, text):
     else:
         filename = fileNameEntry
     return filename
+
+def showWarning(message):
+    messageBox = QtWidgets.QMessageBox()
+    messageBox.setText(message)
+    messageBox.exec_()
+    

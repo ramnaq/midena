@@ -1,7 +1,7 @@
 from model.RegularGrammar import RegularGrammar
 from model.FiniteAutomata import FiniteAutomata
 
-def regular_grammar_to_automata(grammar):
+def rg_to_fa(grammar):
     name = grammar.name + "FiniteAutomata"
     initial = grammar_symbol_form(grammar.root)
     table = {}
@@ -32,7 +32,7 @@ def regular_grammar_to_automata(grammar):
 
     return FiniteAutomata(list(sigma), table, initial, [acceptingState])
 
-def finite_automata_to_grammar(automata):
+def fa_to_rg(automata):
     name = automata.name + "Grammar"
     root = grammar_symbol_form(automata.initial)
     sigma = set(automata.sigma)

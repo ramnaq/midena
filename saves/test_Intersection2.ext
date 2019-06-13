@@ -1,0 +1,1 @@
+{"name": "test_Intersection2.ext", "sigma": ["a", "b"], "table": {"S": {"a": ["A"], "b": "-"}, "A": {"a": ["A"], "b": ["B"]}, "B": {"a": "-", "b": ["B"]}}, "initial": "S", "accepting": ["B"], "grammar_str": "", "regex_str": ""}

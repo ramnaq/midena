@@ -1,1 +1,0 @@
-{"name": "equal_first_lastGrammar", "root": "q0", "symbols": ["Q_1", "Q_2", "Q_3", "Q_0", "Q_4"], "sigma": ["a", "b"], "productions": [["Q_0", ["aQ_1", "a", "bQ_2", "b"]], ["Q_1", ["aQ_1", "a", "bQ_3"]], ["Q_2", ["aQ_4", "bQ_2", "b"]], ["Q_3", ["aQ_1", "a", "bQ_3"]], ["Q_4", ["aQ_4", "bQ_2", "b"]]]}
