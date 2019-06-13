@@ -1,31 +1,7 @@
-import os.path
-
 from model.RegularGrammar import RegularGrammar
 from model.FiniteAutomata import FiniteAutomata
 
-
-divisorStr = "--------------------------------------------------"
-
-def printError(msg):
-    print("[ERROR]", msg)
-
-def startTestMsg(msg):
-    print(divisorStr)
-    print(msg)
-    print(divisorStr)
-
-def remove_flag(flags, flag):
-    if flags & flag:
-        return flags ^ flag
-    return flags
-
-def is_into(element, listOfLists: list) -> bool:
-    for L in listOfLists:
-        if element in listOfLists:
-            return True
-    return False
-
-def regular_grammar_to_automata(grammar):
+def rg_to_fa(grammar):
     name = grammar.name + "FiniteAutomata"
     initial = grammar_symbol_form(grammar.root)
     table = {}
@@ -56,7 +32,7 @@ def regular_grammar_to_automata(grammar):
 
     return FiniteAutomata(list(sigma), table, initial, [acceptingState])
 
-def finite_automata_to_grammar(automata):
+def fa_to_rg(automata):
     name = automata.name + "Grammar"
     root = grammar_symbol_form(automata.initial)
     sigma = set(automata.sigma)
@@ -97,19 +73,4 @@ def next_states_separated(transitions, symbol):
     for ns in transitions[symbol]:
         nextStates += ns.split(", ")
     return nextStates
-
-def promptFile(msg, optional = False):
-    while True:
-        try:
-            fname = input(msg)
-            if optional and fname != "":
-                findFile(fname)
-            return fname
-        except FileNotFoundError:
-            printError("File not found!")
-
-def findFile(path):
-    if not os.path.isfile(path):
-        raise FileNotFoundError()
-    return True
 

@@ -1,42 +1,12 @@
+from model.FormalGrammar import FormalGrammar
+from model.GrammarTypeValidator import RGValidator, CFGValidator
 
-class RegularGrammar():
+
+class RegularGrammar(FormalGrammar):
 
     def __init__(self, symbols, sigma, prods, s, name="Regular_Grammar"):
-        if not (symbols and sigma and prods and s):
-            raise ValueError("Parameters must not be null.")
-        #if not self.is_regular(symbols, sigma, prods, s):
-        #    raise ValueError("Not Regular Grammar.")
-
-        self.symbols = symbols
-        self.sigma = sigma
-        self.productions = prods
-        self.define_root(s)
-        self.name = name
-
-    def is_regular(self, symbols, sigma, prods, s):
-        for p in prods:
-            if (p[0] not in symbols) or (p[0] in sigma):
-                return False
-            for beta in p[1]:
-                if (len(beta) > 2) or (beta[0] not in sigma):
-                    return False
-                elif (len(beta) == 2) and\
-                        ((beta[1] in sigma) or (beta[1] not in symbols)):
-                    return False
-        return True
-
-    def define_root(self, s):
-        if (self.symbols is not None) and (s not in self.symbols):
-            self.root = s
-
-    def add_production(self, p):
-        self.productions.append(p)
-
-    def derivate(self, iform, n):
-        pass
-
-    def apply_productions(self, w):
-        pass
+        super().__init__(symbols, sigma, prods, s, name, RGValidator())
+        self.type = 3
 
 
 if __name__ == "__main__":

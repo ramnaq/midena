@@ -1,0 +1,1 @@
+{"name": "being_with_b.ext", "sigma": ["a", "b"], "table": {"q0": {"a": "-", "b": ["q1"]}, "q1": {"a": ["q1"], "b": ["q1"]}}, "initial": "q0", "accepting": ["q1"], "grammar_str": "", "regex_str": ""}

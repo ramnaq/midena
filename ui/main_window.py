@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/main_window.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.1
+# Created by: PyQt5 UI code generator 5.12.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -196,6 +196,9 @@ class Ui_MainWindow(object):
         self.importGrammarBtn = QtWidgets.QPushButton(self.verticalLayoutWidget_3)
         self.importGrammarBtn.setObjectName("importGrammarBtn")
         self.verticalLayout_2.addWidget(self.importGrammarBtn)
+        self.grammarToFABtn = QtWidgets.QPushButton(self.verticalLayoutWidget_3)
+        self.grammarToFABtn.setObjectName("grammarToFABtn")
+        self.verticalLayout_2.addWidget(self.grammarToFABtn)
         self.groupBox_3 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_3.setGeometry(QtCore.QRect(610, 10, 280, 301))
         font = QtGui.QFont()
@@ -276,6 +279,7 @@ class Ui_MainWindow(object):
         self.btn_remove_grammar.setText(_translate("MainWindow", "Remove"))
         self.exportGrammarBtn.setText(_translate("MainWindow", "Export"))
         self.importGrammarBtn.setText(_translate("MainWindow", "Import"))
+        self.grammarToFABtn.setText(_translate("MainWindow", "Convert to FA"))
         self.groupBox_3.setTitle(_translate("MainWindow", "Regular Expression"))
         self.exportRegExBtn.setText(_translate("MainWindow", "Export"))
         self.importRegExBtn.setText(_translate("MainWindow", "Import"))
