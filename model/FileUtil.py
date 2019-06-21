@@ -82,7 +82,7 @@ def exportRegEx(re, path):
 def createGrammar(symbols, sigma, productions, root, name):
     # TODO: evaluate the usage of parameter 'type' to instantiate the proper
     #       object.
-    # Maybe some design pattern can be properly applyed to this case.
+    # Maybe some design pattern can be properly applied to this case.
     grammar = None
     try:
         grammar = RegularGrammar(symbols, sigma, productions, root, name)
