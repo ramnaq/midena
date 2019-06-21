@@ -32,6 +32,12 @@ class FormalGrammar(ABC):
     def apply_productions(self, w):
         pass
 
+    def productionsDictionary(self):
+        pdict = {}
+        for prod in self.productions:
+            pdict[prod[0]] = prod[1]
+        return pdict
+
     def __str__(self):
         grammarStr = ""
         for p in self.productions:
