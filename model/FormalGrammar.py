@@ -5,15 +5,15 @@ from model.GrammarTypeValidator import RGValidator
 
 class FormalGrammar(ABC):
 
-    def __init__(self, symbols, sigma, prods, s, name="Grammar",
+    def __init__(self, symbols, sigma, prods, root, name="Grammar",
             grammarValidator=RGValidator):
-        if not (symbols and sigma and prods and s):
+        if not (symbols and sigma and prods and root):
             raise ValueError("Parameters must not be null.")
 
         self.symbols = symbols
         self.sigma = sigma
         self.productions = prods
-        self.define_root(s)
+        self.root = root
         self.name = name
 
         if not grammarValidator.validProductions(self):
@@ -21,10 +21,6 @@ class FormalGrammar(ABC):
 
     def updateProductions(self, prods):
         self.productions = prods
-
-    def define_root(self, s):
-        if (self.symbols is not None) and (s not in self.symbols):
-            self.root = s
 
     def derivate(self, iform, n):
         pass
