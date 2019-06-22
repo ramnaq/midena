@@ -9,12 +9,15 @@ class ContextFreeGrammar(FormalGrammar):
         self.type = 2
 
     def chomskyNormalForm(self):
-        # Elimination of the start symbol from right-hand sides
+        # 1. Elimination of the start symbol from right-hand sides
         self.productions.append(("S'", [self.root]))
         self.root = "S'"
 
-        # Removal of Null Productions
+        # 2. Removal of Null Productions
         self.removeNullProductions()
+
+        # 3. Removal of Unit Productions
+        self.removeUnitProductions()
 
         '''
         # Eliminate rules with nonsolitary terminals
@@ -27,6 +30,13 @@ class ContextFreeGrammar(FormalGrammar):
         '''
 
     def removeNullProductions(self):
+        '''This method removes all null productions of self.productions.
+
+        A production is null when it contains at least one nullable symbol.
+        A non-terminal symbol A is nullable if there is a production A -> ε or
+        if there is a derivation that starts at A and leads to ε (A -> ...  ->
+        ε).
+        '''
         nullableSet = self.nullableNonTerminals()
 
         # Replacement of nullable symbols for ε
@@ -55,13 +65,9 @@ class ContextFreeGrammar(FormalGrammar):
                     newProds.append((prod[0], betas))
 
         self.productions = newProds
-        print(str(self))
 
     def nullableNonTerminals(self):
-        '''Returns a set with all non-terminal symbols. A is nullable if there
-            is a production A -> ε or if there is a derivation that starts at
-            A and leads to ε (A -> ... -> ε)
-        '''
+        '''Returns a set with all nullable non-terminal symbols.'''
         nullableSet = set()
 
         def isDirectNullable(symbol):
