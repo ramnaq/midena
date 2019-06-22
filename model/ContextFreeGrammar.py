@@ -17,7 +17,7 @@ class ContextFreeGrammar(FormalGrammar):
         self.removeNullProductions()
 
         # 3. Removal of Unit Productions
-        self.removeUnitProductions()
+        #self.removeUnitProductions()
 
         '''
         # Eliminate rules with nonsolitary terminals
@@ -30,7 +30,7 @@ class ContextFreeGrammar(FormalGrammar):
         '''
 
     def removeNullProductions(self):
-        '''This method removes all null productions of self.productions.
+        '''Removes all null productions of self.productions.
 
         A production is null when it contains at least one nullable symbol.
         A non-terminal symbol A is nullable if there is a production A -> ε or
@@ -39,32 +39,18 @@ class ContextFreeGrammar(FormalGrammar):
         '''
         nullableSet = self.nullableNonTerminals()
 
-        # Replacement of nullable symbols for ε
-        newProds = []
-        for prod in self.productions:
-            substitutions = []
+        # Replacement of nullable symbols for ε (removal of nullable symbols)
+        while len(nullableSet) != 0:
+            for prod in self.productions:
+                substitutions = []
 
-            for beta in prod[1]:
-                nullableInBeta = set(filter(lambda b: b in nullableSet, beta))
-                if len(nullableInBeta) > 0:
-                    substitutions +=\
-                        self.nullablesRemoval(nullableInBeta, beta)
-                    if len(beta) > 1 or\
-                            (beta[0] not in nullableInBeta and b != 'ε'):
-                        substitutions += prod[1]
-                    self.removeReplicated(substitutions)
-
-            if substitutions != []:
-                newProds.append((prod[0], substitutions))
-            else:
-                betas = list(filter(
-                    lambda beta: len(beta) > 1 or
-                        (beta[0] not in nullableSet and beta[0] != 'ε'),
-                    prod[1]))
-                if len(betas) != 0:
-                    newProds.append((prod[0], betas))
-
-        self.productions = newProds
+                for beta in prod[1]:
+                    nullableInBeta = set(filter(lambda b: b in nullableSet, beta))
+                    while len(nullableInBeta) != 0:
+                        nb = nullableInBeta.pop()
+                        self.nullableRemoval(nb)
+                        nullableSet.discard(nb)
+                        nullableInBeta.discard(nb)
 
     def nullableNonTerminals(self):
         '''Returns a set with all nullable non-terminal symbols.'''
@@ -98,16 +84,26 @@ class ContextFreeGrammar(FormalGrammar):
 
         return nullableSet
 
-    def nullablesRemoval(self, nullableSet, beta):
-        substitutions = []
+    def nullableRemoval(self, nullable):
+        newProductions = self.productions.copy()
 
-        # Add new the resulting substitutions for each nullable symbol
-        for n in nullableSet:
-            substitutions += self.nullableRemoval(n, beta)
+        for prod in self.productions:
+            substitutions = []
 
-        return substitutions
+            for beta in prod[1]:
+                nullableInBeta = set(filter(lambda b: nullable in b, beta))
+                if len(nullableInBeta) == 1:
+                    # 'nullable' is present in some substitution
+                    substitutions += self.removeNullable(nullable, beta)
+                    self.removeReplicated(substitutions)
 
-    def nullableRemoval(self, nullable, beta):
+            self.newProductionsUpdating(
+                    newProductions, prod, substitutions, nullable)
+
+        self.productions = newProductions
+        print(str(self))
+
+    def removeNullable(self, nullable, beta):
         newSubstitutions = [beta]
 
         # Base recursion case
@@ -121,7 +117,7 @@ class ContextFreeGrammar(FormalGrammar):
             if s == nullable:
                 btemp = beta.copy()
                 btemp.pop(i)
-                newSubstitutions += self.nullableRemoval(nullable, btemp)
+                newSubstitutions += self.removeNullable(nullable, btemp)
             i += 1
 
         return newSubstitutions
@@ -134,6 +130,28 @@ class ContextFreeGrammar(FormalGrammar):
                 for i in range(0, ocurrencies - 1):
                     arr.remove(s)
         return arr
+
+    def newProductionsUpdating(
+            self, newProductions, prod, substitutions, nullable):
+        newProd = None
+
+        def removeEmptySymbol(substitutions):
+            return list(filter(lambda s: 'ε' not in s, substitutions))
+
+        if substitutions != []:
+            if prod[0] == nullable:
+                substitutions = removeEmptySymbol(substitutions)
+            newProd = (prod[0], substitutions)
+        else:
+            betas = prod[1]
+            if prod[0] == nullable:
+                betas = removeEmptySymbol(betas)
+            if len(betas) != 0:
+                newProd = (prod[0], betas)
+
+        if newProd is not None:
+            newProductions.remove(prod)
+            newProductions.append(newProd)
 
     def eliminateEmptyProductions(self):
         ...
