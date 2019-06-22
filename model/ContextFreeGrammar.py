@@ -45,7 +45,8 @@ class ContextFreeGrammar(FormalGrammar):
                 substitutions = []
 
                 for beta in prod[1]:
-                    nullableInBeta = set(filter(lambda b: b in nullableSet, beta))
+                    nullableInBeta =\
+                        set(filter(lambda b: b in nullableSet, beta))
                     while len(nullableInBeta) != 0:
                         nb = nullableInBeta.pop()
                         self.nullableRemoval(nb)
@@ -53,6 +54,11 @@ class ContextFreeGrammar(FormalGrammar):
                         nullableInBeta.discard(nb)
 
     def removeUnitProductions(self):
+        '''Removes all null productions of self.productions.
+
+        Any production rule in the form A -> B where A and B ∈ Non-terminal is
+        a Unit Production.
+        '''
         prodsDict = self.productionsDictionary()
         newProds = self.productions.copy()
 
@@ -60,16 +66,41 @@ class ContextFreeGrammar(FormalGrammar):
             for prod in self.productions:
                 for beta in prod[1]:
                     if len(beta) == 1 and beta[0] in self.symbols:
-                        self.removeUnitProduction(newProds, prod, beta[0])
+                        prod = self.removeUnitProduction(
+                                    newProds, prod, beta[0])
             self.productions = newProds
 
-    def removeUnitProduction(self, newProds, prod, symbol):
-        currProdBeta = prod[1].copy()
-        currProdBeta.remove([symbol])
-        symbolProdBeta = self.productionsDictionary()[symbol]
+    def removeUnitProduction(self, newProds, prod, unitary):
+        '''Do the removal of the given unitary symbol, that occurs in prod.
+
+        The substituions of the unitary symbol are added to prod, originating a
+        new prod, which is added to newProds (it might further replace
+        self.productions. The old prod is removed from newProds.
+
+        Return - the new prod added to newProds.
+        '''
+        unitarySymbolProdBeta = self.productionsDictionary()[unitary].copy()
+        newProd = None
+
+        if prod[0] == unitary:
+            # It is a circular production (unitary -> ...|unitary|...).
+            # Just add the same beta without producing unitary.
+
+            unitarySymbolProdBeta.remove([unitary])
+            self.removeReplicated(unitarySymbolProdBeta)
+            newProd = (prod[0], unitarySymbolProdBeta)
+            newProds.append(newProd)
+
+        else:
+            currProdBeta = prod[1].copy()
+            currProdBeta.remove([unitary])
+            newProdBeta = currProdBeta + unitarySymbolProdBeta
+            self.removeReplicated(newProdBeta)
+            newProd = (prod[0], newProdBeta)
+            newProds.append(newProd)
 
         newProds.remove(prod)
-        newProds.append((prod[0], currProdBeta + symbolProdBeta))
+        return newProd
 
     def nullableNonTerminals(self):
         '''Returns a set with all nullable non-terminal symbols.'''
