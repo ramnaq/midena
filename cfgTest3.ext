@@ -1,0 +1,1 @@
+{"name": "cfgTestUnitRemoval", "root": "S", "symbols": ["N", "X", "S", "Z", "M", "Y"], "sigma": ["b", "a"], "productions": [["S", [["X", "Y"]]], ["X", [["a"]]], ["Y", [["Z"], ["b"]]], ["Z", [["M"]]], ["M", [["N"]]], ["N", [["a"]]]], "type": 2}

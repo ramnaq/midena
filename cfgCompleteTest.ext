@@ -1,0 +1,9 @@
+{"name": "completeTest",
+"root": "S",
+"symbols": ["A", "B", "S"],
+"sigma": ["a", "\u03b5", "b"],
+"productions": [
+["S", [["A", "S", "A"], ["a", "B"]]],
+["A", [["B"], ["S"]]],
+["B", [["b"], ["\u03b5"]]]],
+"type": 2}
