@@ -17,7 +17,7 @@ class ContextFreeGrammar(FormalGrammar):
         self.removeNullProductions()
 
         # 3. Removal of Unit Productions
-        #self.removeUnitProductions()
+        self.removeUnitProductions()
 
         '''
         # Eliminate rules with nonsolitary terminals
@@ -85,6 +85,7 @@ class ContextFreeGrammar(FormalGrammar):
         return nullableSet
 
     def nullableRemoval(self, nullable):
+        '''Removes 'nullable' non terminal symbol from all productions'''
         newProductions = self.productions.copy()
 
         for prod in self.productions:
@@ -101,9 +102,14 @@ class ContextFreeGrammar(FormalGrammar):
                     newProductions, prod, substitutions, nullable)
 
         self.productions = newProductions
-        print(str(self))
 
     def removeNullable(self, nullable, beta):
+        '''Recursively replaces all 'nullable' symbols from the given beta
+        with 'ε', that is, to remove them, in all possible combinations.
+        returning a list of the resulting beta's.
+
+        Return a list of the new beta's.
+        '''
         newSubstitutions = [beta]
 
         # Base recursion case
@@ -123,16 +129,26 @@ class ContextFreeGrammar(FormalGrammar):
         return newSubstitutions
 
     def removeReplicated(self, arr):
+        '''Removes all replicated elements of the given list'''
         # TODO move this function from here
         for s in arr:
             ocurrencies = arr.count(s)
             if ocurrencies > 1:
                 for i in range(0, ocurrencies - 1):
                     arr.remove(s)
-        return arr
 
     def newProductionsUpdating(
             self, newProductions, prod, substitutions, nullable):
+        '''Add to newProductions a new production, accordingly the given
+        nullable symbol. If the head of prod is nullable, then the new
+        production must not produce ε.
+
+        If substitutions is empty, the original substitutions from prod
+        will be used. Otherwise, substitutions itself.
+
+        newProductions is a specific state of self.productions being
+        updated on removal of null productions.
+        '''
         newProd = None
 
         def removeEmptySymbol(substitutions):
