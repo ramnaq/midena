@@ -10,7 +10,7 @@ class ContextFreeGrammar(FormalGrammar):
 
     def chomskyNormalForm(self):
         # 1. Elimination of the start symbol from right-hand sides
-        self.productions.append(("S'", [self.root]))
+        self.productions.append(("S'", [[self.root]]))
         self.root = "S'"
 
         # 2. Removal of Null Productions
@@ -51,6 +51,25 @@ class ContextFreeGrammar(FormalGrammar):
                         self.nullableRemoval(nb)
                         nullableSet.discard(nb)
                         nullableInBeta.discard(nb)
+
+    def removeUnitProductions(self):
+        prodsDict = self.productionsDictionary()
+        newProds = self.productions.copy()
+
+        while self.countUnitProductions() != 0:
+            for prod in self.productions:
+                for beta in prod[1]:
+                    if len(beta) == 1 and beta[0] in self.symbols:
+                        self.removeUnitProduction(newProds, prod, beta[0])
+            self.productions = newProds
+
+    def removeUnitProduction(self, newProds, prod, symbol):
+        currProdBeta = prod[1].copy()
+        currProdBeta.remove([symbol])
+        symbolProdBeta = self.productionsDictionary()[symbol]
+
+        newProds.remove(prod)
+        newProds.append((prod[0], currProdBeta + symbolProdBeta))
 
     def nullableNonTerminals(self):
         '''Returns a set with all nullable non-terminal symbols.'''
@@ -127,6 +146,14 @@ class ContextFreeGrammar(FormalGrammar):
             i += 1
 
         return newSubstitutions
+
+    def countUnitProductions(self):
+        counter = 0
+        for prod in self.productions:
+            for beta in prod[1]:
+                if len(beta) == 1 and beta[0] in self.symbols:
+                    counter += 1
+        return counter
 
     def removeReplicated(self, arr):
         '''Removes all replicated elements of the given list'''
