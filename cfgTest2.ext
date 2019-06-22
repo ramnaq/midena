@@ -1,0 +1,11 @@
+{"name": "TEST CHOMSKY",
+"root": "S",
+"symbols": ["A", "B", "S", "C"],
+"sigma": ["a", "b", "ε", "c"],
+"productions": [
+  ["S", ["ABAC"]],
+  ["A", ["aA", "ε"]],
+  ["B", ["bB", "ε"]],
+  ["C", ["c"]]
+],
+"type": 2}
