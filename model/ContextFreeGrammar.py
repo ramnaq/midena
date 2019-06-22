@@ -9,13 +9,14 @@ class ContextFreeGrammar(FormalGrammar):
         self.type = 2
 
     def chomskyNormalForm(self):
-        self.removeNullProductions()
-        '''
-        # Eliminate the start symbol from right-hand sides
-        self.productions.append(('T', [self.root]))
-        self.root = 'T'
+        # Elimination of the start symbol from right-hand sides
+        self.productions.append(("S'", [self.root]))
+        self.root = "S'"
 
+        # Removal of Null Productions
         self.removeNullProductions()
+
+        '''
         # Eliminate rules with nonsolitary terminals
         p, b = 0, 0
         for prod in self.productions:
@@ -26,9 +27,35 @@ class ContextFreeGrammar(FormalGrammar):
         '''
 
     def removeNullProductions(self):
-        nullable = self.nullableNonTerminals()
-        print(nullable)
-        # more soon
+        nullableSet = self.nullableNonTerminals()
+
+        # Replacement of nullable symbols for ε
+        newProds = []
+        for prod in self.productions:
+            substitutions = []
+
+            for beta in prod[1]:
+                nullableInBeta = set(filter(lambda b: b in nullableSet, beta))
+                if len(nullableInBeta) > 0:
+                    substitutions +=\
+                        self.nullablesRemoval(nullableInBeta, beta)
+                    if len(beta) > 1 or\
+                            (beta[0] not in nullableInBeta and b != 'ε'):
+                        substitutions += prod[1]
+                    self.removeReplicated(substitutions)
+
+            if substitutions != []:
+                newProds.append((prod[0], substitutions))
+            else:
+                betas = list(filter(
+                    lambda beta: len(beta) > 1 or
+                        (beta[0] not in nullableSet and beta[0] != 'ε'),
+                    prod[1]))
+                if len(betas) != 0:
+                    newProds.append((prod[0], betas))
+
+        self.productions = newProds
+        print(str(self))
 
     def nullableNonTerminals(self):
         '''Returns a set with all non-terminal symbols. A is nullable if there
@@ -64,6 +91,43 @@ class ContextFreeGrammar(FormalGrammar):
         nullable(isIndirectNullable)
 
         return nullableSet
+
+    def nullablesRemoval(self, nullableSet, beta):
+        substitutions = []
+
+        # Add new the resulting substitutions for each nullable symbol
+        for n in nullableSet:
+            substitutions += self.nullableRemoval(n, beta)
+
+        return substitutions
+
+    def nullableRemoval(self, nullable, beta):
+        newSubstitutions = [beta]
+
+        # Base recursion case
+        if (len(beta) == 1):
+            if beta[0] == nullable:
+                newSubstitutions.pop(0)
+            return newSubstitutions
+
+        i = 0
+        for s in beta:
+            if s == nullable:
+                btemp = beta.copy()
+                btemp.pop(i)
+                newSubstitutions += self.nullableRemoval(nullable, btemp)
+            i += 1
+
+        return newSubstitutions
+
+    def removeReplicated(self, arr):
+        # TODO move this function from here
+        for s in arr:
+            ocurrencies = arr.count(s)
+            if ocurrencies > 1:
+                for i in range(0, ocurrencies - 1):
+                    arr.remove(s)
+        return arr
 
     def eliminateEmptyProductions(self):
         ...
