@@ -19,6 +19,7 @@ class ContextFreeGrammar(FormalGrammar):
         # 3. Removal of Unit Productions
         self.removeUnitProductions()
 
+        self.removeProdsLongerThanTwo()
         '''
         # Eliminate rules with nonsolitary terminals
         p, b = 0, 0
@@ -69,6 +70,84 @@ class ContextFreeGrammar(FormalGrammar):
                         prod = self.removeUnitProduction(
                                     newProds, prod, beta[0])
             self.productions = newProds
+
+    def removeProdsLongerThanTwo(self):
+        newProds = self.productions.copy()
+        prodIndex = 0
+        for prod in newProds:
+            j = 1
+            for beta in prod[1]:
+                if len(beta) > 2:
+                    i = self.nonTerminalsChainIndex(beta)
+                    self.removeProdLongerThanTwo(newProds, prodIndex, beta, i + 1, j)
+                    j += 1
+            prodIndex += 1
+
+        self.productions = newProds
+
+    def nonTerminalsChainIndex(self, beta):
+        for i in range(len(beta) - 2):
+            if (beta[i] in self.symbols) and (beta[i+1] in self.symbols):
+                return i
+            i += 1
+        return -1
+        '''
+        while i < length:
+            start = 0
+            for b in beta:
+                if b in self.symbols:
+                    start = i
+                    break
+                i += 1
+
+            end = start + 1
+            while (end < len(beta) - 1) and (beta[end] in self.symbols):
+                end += 1
+        '''
+
+    def removeProdLongerThanTwo(self, newProds, prodIndex, beta, chainIndex, j=1):
+        prod = newProds[prodIndex]
+        currHead = prod[0]
+        substitution = beta[chainIndex + 1:]
+
+        newProductionHead = '~' + currHead + '_1'
+
+        # Check if currHead is a production created by this algorithm
+
+        # Get index of the last _ in currHead
+        last_ = 0
+        for i in range(len(currHead) - 1):
+            if currHead[i] == '_':
+                last_ = i
+            i += 1
+
+        # Check if currHead after its last _ is an integer
+        createdByThisAlgorithm = False
+        indexOfLastProdCreated = -1
+        if len(currHead) >= 4 and (last_ >= 2 or last_ <= len(currHead) - 2)\
+                and currHead[0] == '~':
+            try:
+                indexOfLastProdCreated = int(currHead[last_ + 1:])
+                createdByThisAlgorithm = True
+            except ValueError:
+                ...
+
+        if createdByThisAlgorithm:
+            # newProductionHead already starts with two ~, use '~'*j and ignore
+            # these two ~ (by concatenating from [2:]). Concatenate the new
+            # production index too.
+            newProductionHead = '~'*j + newProductionHead[2:last_+2]\
+                + str(indexOfLastProdCreated + 1)
+
+        self.symbols.add(newProductionHead)
+        newBetas = prod[1]
+        newBetas.remove(beta)
+        newBetas.append(beta[:chainIndex + 1] + [newProductionHead])
+        newProds[prodIndex] = (currHead, newBetas)  # update the current prod
+
+        newProd = (newProductionHead, [substitution])
+        newProds.insert(prodIndex + 1, newProd)
+        return newProds
 
     def removeUnitProduction(self, newProds, prod, unitary):
         '''Do the removal of the given unitary symbol, that occurs in prod.
