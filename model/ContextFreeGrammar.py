@@ -39,6 +39,7 @@ class ContextFreeGrammar(FormalGrammar):
         ε).
         '''
         nullableSet = self.nullableNonTerminals()
+        nullableSetCp = nullableSet.copy()
 
         # Replacement of nullable symbols for ε (removal of nullable symbols)
         while len(nullableSet) != 0:
@@ -50,7 +51,7 @@ class ContextFreeGrammar(FormalGrammar):
                         set(filter(lambda b: b in nullableSet, beta))
                     while len(nullableInBeta) != 0:
                         nb = nullableInBeta.pop()
-                        self.nullableRemoval(nb)
+                        self.nullableRemoval(nullableSetCp, nb)
                         nullableSet.discard(nb)
                         nullableInBeta.discard(nb)
 
@@ -185,18 +186,19 @@ class ContextFreeGrammar(FormalGrammar):
         '''Returns a set with all nullable non-terminal symbols.'''
         nullableSet = set()
 
-        def isDirectNullable(symbol):
-            return symbol == 'ε'
+        def isDirectNullable(beta):
+            return beta[0] == 'ε'
 
-        def isIndirectNullable(symbol):
-            return symbol in nullableSet
+        def isIndirectNullable(beta):
+            beta_ = list(filter(lambda b: b in nullableSet, beta))
+            return beta_ == beta
 
         def nullable(func):
             for prod in self.productions:
                 isNull = False
 
                 for beta in prod[1]:
-                    if (len(beta) == 1) and func(beta[0]):
+                    if func(beta):
                         # the non-terminal prod[0] is replaced by at least one
                         # empty symbol, then it is a nullable non-terminal
                         isNull = True
@@ -213,7 +215,7 @@ class ContextFreeGrammar(FormalGrammar):
 
         return nullableSet
 
-    def nullableRemoval(self, nullable):
+    def nullableRemoval(self, nullableSet, nullable):
         '''Removes 'nullable' non terminal symbol from all productions'''
         newProductions = self.productions.copy()
 
@@ -226,6 +228,11 @@ class ContextFreeGrammar(FormalGrammar):
                     # 'nullable' is present in some substitution
                     substitutions += self.removeNullable(nullable, beta)
                     self.removeReplicated(substitutions)
+                elif not list(filter(
+                        lambda b: (b in self.sigma) or (b in nullableSet),
+                        beta)):
+                    # the current beta has no terminal or nullable symbol
+                    substitutions += [beta]
 
             self.newProductionsUpdating(
                     newProductions, prod, substitutions, nullable)
@@ -243,8 +250,8 @@ class ContextFreeGrammar(FormalGrammar):
 
         # Base recursion case
         if (len(beta) == 1):
-            if beta[0] == nullable:
-                newSubstitutions.pop(0)
+            #if beta[0] == nullable:
+            #    newSubstitutions.pop(0)
             return newSubstitutions
 
         i = 0
