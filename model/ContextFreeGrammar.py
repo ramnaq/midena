@@ -15,11 +15,14 @@ class ContextFreeGrammar(FormalGrammar):
 
         # 2. Removal of Null Productions
         self.removeNullProductions()
+        print("Null productions:\n", str(self))
 
         # 3. Removal of Unit Productions
         self.removeUnitProductions()
+        print("Unit Productions:\n", str(self))
 
         self.removeProdsLongerThanTwo()
+        print("Longer than two:\n", str(self))
         '''
         # Eliminate rules with nonsolitary terminals
         p, b = 0, 0
@@ -39,7 +42,6 @@ class ContextFreeGrammar(FormalGrammar):
         ε).
         '''
         nullableSet = self.nullableNonTerminals()
-        nullableSetCp = nullableSet.copy()
 
         # Replacement of nullable symbols for ε (removal of nullable symbols)
         while len(nullableSet) != 0:
@@ -51,7 +53,8 @@ class ContextFreeGrammar(FormalGrammar):
                         set(filter(lambda b: b in nullableSet, beta))
                     while len(nullableInBeta) != 0:
                         nb = nullableInBeta.pop()
-                        self.nullableRemoval(nullableSetCp, nb)
+                        # not sure if nullableInBeta or nullableSet
+                        self.nullableRemoval(nullableInBeta, nb)
                         nullableSet.discard(nb)
                         nullableInBeta.discard(nb)
 
@@ -229,9 +232,9 @@ class ContextFreeGrammar(FormalGrammar):
                     substitutions += self.removeNullable(nullable, beta)
                     self.removeReplicated(substitutions)
                 elif not list(filter(
-                        lambda b: (b in self.sigma) or (b in nullableSet),
+                        lambda b: (b in nullableSet),
                         beta)):
-                    # the current beta has no terminal or nullable symbol
+                    # beta has no non terminal symbol that is in nullableSet
                     substitutions += [beta]
 
             self.newProductionsUpdating(
