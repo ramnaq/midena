@@ -82,15 +82,14 @@ class ContextFreeGrammar(FormalGrammar):
             j = 1
             for beta in prod[1]:
                 if len(beta) > 2:
-                    i = self.nonTerminalsChainIndex(beta)
-                    self.removeProdLongerThanTwo(newProds, prodIndex, beta, i + 1, j)
+                    self.removeProdLongerThanTwo(newProds, prodIndex, beta, j)
                     j += 1
             prodIndex += 1
 
         self.productions = newProds
 
-    def nonTerminalsChainIndex(self, beta):
-        for i in range(len(beta) - 2):
+    def chainIndex(self, beta):
+        for i in range(1, len(beta) - 2):
             if (beta[i] in self.symbols) and (beta[i+1] in self.symbols):
                 return i
             i += 1
@@ -109,10 +108,10 @@ class ContextFreeGrammar(FormalGrammar):
                 end += 1
         '''
 
-    def removeProdLongerThanTwo(self, newProds, prodIndex, beta, chainIndex, j=1):
+    def removeProdLongerThanTwo(self, newProds, prodIndex, beta, j=1):
         prod = newProds[prodIndex]
         currHead = prod[0]
-        substitution = beta[chainIndex + 1:]
+        substitution = beta[1:]
 
         newProductionHead = '~' + currHead + '_1'
 
@@ -146,7 +145,7 @@ class ContextFreeGrammar(FormalGrammar):
         self.symbols.add(newProductionHead)
         newBetas = prod[1]
         newBetas.remove(beta)
-        newBetas.append(beta[:chainIndex + 1] + [newProductionHead])
+        newBetas.append([beta[0]] + [newProductionHead])
         newProds[prodIndex] = (currHead, newBetas)  # update the current prod
 
         newProd = (newProductionHead, [substitution])
