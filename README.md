@@ -1,10 +1,10 @@
-# MIDENA
+# Midena
 
-A tool for dealing with Regular Languages and Free Context Languages. Midena Implements some algorithm around grammars, regular Expressions and finite Automata.
+A tool for dealing with regular languages and context-free languages. Midena implements some grammar, regular expression and finite automata algorithms.
 
-Project developed for class INE5421 - Formal Languages and Compilers at UFSC.
-Students: Diogo Junior and Ramna Sidharta
-Programming Language: Python
+Project developed for class INE5421 - Formal Languages and Compilers at UFSC.  
+Students: Diogo Junior and Ramna Sidharta  
+Programming Language: Python  
 Framework for UI: PyQt 5.12
 
 ## Installation
@@ -28,8 +28,8 @@ Install:
 
 ### Finite Automata
 
-A Finite Automata in Midena is modeled by the class `FiniteAutomata`,
-and it can represent a Deterministic or Non-deterministic automata.
+A finite automata in Midena is modeled by the class `FiniteAutomata`,
+and it can represent a deterministic or non-deterministic automata.
 It consists of:
 * a set `sigma` of characters of the language, e.g. ['a', 'b', '&']
 * an `initial` state, e.g. "q0"
@@ -47,7 +47,7 @@ The user can create a new automata clicking at respective button and then enteri
 the transition table data that is updated interactively.
 The FA can be saved to a text file and be imported at any time.
 If it's a non-deterministic finite automata, it can also be determinized. And it can
-be converted to a Regular Grammar.
+be converted to a regular grammar.
 One can also test if a sentence pertences to the language represented by the automata.
 
 
@@ -65,5 +65,5 @@ where BETA is an array of "symbols" and "sigmas"
 
 ### Regular Expression
 
-For the first deadline of this project we didn't need to implement any algorithms for Regular Expressions,
+For the first deadline of this project we didn't need to implement any algorithms for regular expressions,
 so it was represented just as a string.
